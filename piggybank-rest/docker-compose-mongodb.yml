@@ -1,0 +1,9 @@
+---
+version: '2'
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:3.0.4
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles

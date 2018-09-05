@@ -82,5 +82,34 @@ Transfer-Encoding: chunked
 
 ### Setup MongoDB docker
 
+```
+vim docker-compose-mongodb.yml
+```
 
+```
+---
+version: '2'
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:3.0.4
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles
+```
+
+run Mongodb docker in a new terminal:
+
+```
+$ sudo docker-compose -f ./docker-compose-mongodb.yml
+```
+
+> When you want to stop the containers define in the compose file `Ctrl+C` is not enough. To bring them down fully, you will need to run the inverse down command: `docker-compose -f ../docker-compose-mongodb.yml down`
+
+
+## Create a repository to store Transactions (Deposits and Withdrawalss)
+
+```
+$ vim ./src/main/java/io/github/joaovicente/piggybank/Transaction.java
+```
 
