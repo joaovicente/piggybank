@@ -9,12 +9,13 @@ $ spring init \
     piggybank
 ```
 
-
-
 ## Create `DepositController.java`
 
 ```
 $ vim ./src/main/java/io/github/joaovicente/piggybank/DepositController.java
+```
+
+
 ```
 package io.github.joaovicente.piggybank;
 
@@ -32,7 +33,6 @@ public class DepositController {
     }
 }
 ```
-
 
 ## Create `CreateDepositRequestDTO`
 
@@ -54,6 +54,7 @@ public class CreateDepositRequestDto {
 
 
 Run the app
+
 ```
 $ mvn spring-boot:run
 ```
