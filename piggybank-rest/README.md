@@ -33,6 +33,7 @@ public class DepositController {
 }
 ```
 
+
 ## Create `CreateDepositRequestDTO`
 
 ```
@@ -51,10 +52,12 @@ public class CreateDepositRequestDto {
 }
 ```
 
+
 Run the app
 ```
 $ mvn spring-boot:run
 ```
+
 
 ## Make the first deposit
 
@@ -72,7 +75,9 @@ Transfer-Encoding: chunked
 }
 ```
 
+
 ## Persist deposit using MongoDB
+
 
 ### Setup MongoDB docker
 
