@@ -16,7 +16,7 @@ $ vim ./src/main/java/io/github/joaovicente/piggybank/DepositController.java
 ```
 
 
-```
+```java
 package io.github.joaovicente.piggybank;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +40,7 @@ public class DepositController {
 $ vim ./src/main/java/io/github/joaovicente/piggybank/CreateDepositRequestDto.java
 ```
 
-```
+```java
 package io.github.joaovicente.piggybank;
 
 import lombok.Data;
