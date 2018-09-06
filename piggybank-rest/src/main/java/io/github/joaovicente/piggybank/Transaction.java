@@ -14,9 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transaction {
+    public enum Kind {CREDIT, DEBIT}
     @Id
     private String id;
-//    enum type {DEPOSIT, WITHDRAWAL}
+    private Kind kind;
     private String description;
     private float amount;
 }

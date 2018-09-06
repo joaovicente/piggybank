@@ -8,19 +8,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
-public class DepositController {
+public class CreditController {
     @Autowired
     TransactionRepository transactionRepository;
 
-    @RequestMapping(value = "/deposit", method = RequestMethod.POST)
+    @RequestMapping(value = "/credit", method = RequestMethod.POST)
 
-    public CreateDepositRequestDto createDeposit(@RequestBody CreateDepositRequestDto createDepositRequestDto) {
-	Transaction transaction = Transaction.builder()
-                .description(createDepositRequestDto.getDescription())
-                .amount(createDepositRequestDto.getAmount())
+    public CreateCreditRequestDto createCredit(@RequestBody CreateCreditRequestDto createCreditRequestDto) {
+        Transaction transaction = Transaction.builder()
+                .description(createCreditRequestDto.getDescription())
+                .amount(createCreditRequestDto.getAmount())
+                .kind(Transaction.Kind.CREDIT)
                 .build();
         transactionRepository.insert(transaction);
-        return createDepositRequestDto;
+        return createCreditRequestDto;
     }
 }
 
