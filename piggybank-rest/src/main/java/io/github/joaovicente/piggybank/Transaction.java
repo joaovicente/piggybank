@@ -19,5 +19,5 @@ public class Transaction {
     private String id;
     private Kind kind;
     private String description;
-    private float amount;
+    private int amount;
 }
