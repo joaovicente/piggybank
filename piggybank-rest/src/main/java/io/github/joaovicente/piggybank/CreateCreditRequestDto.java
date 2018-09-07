@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CreateCreditRequestDto {
     private String description;
-    private float amount;
+    private int amount;
 }
 
