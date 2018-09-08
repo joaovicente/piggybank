@@ -1,9 +1,6 @@
 package io.github.joaovicente.piggybank;
 
 import io.github.joaovicente.piggybank.dto.BalanceResponseDto;
-import io.github.joaovicente.piggybank.dto.CreateCreditRequestDto;
-import io.github.joaovicente.piggybank.dto.CreateDebitRequestDto;
-import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import lombok.extern.java.Log;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,9 +30,12 @@ public class BalanceControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private RestApiUtil api;
+
     @Before
     public void setup() {
-        reset();
+        api = new RestApiUtil(port, restTemplate);
+        api.reset();
     }
 
     @Test
@@ -57,8 +56,8 @@ public class BalanceControllerTest {
 
     @Test
     public void getBalanceAfterCreditAndDebitPair() throws Exception {
-        credit(100);
-        debit(50);
+        api.credit(100);
+        api.debit(50);
         BalanceResponseDto responseBody = this.restTemplate.getForObject(
                 "http://localhost:" + port + "/balance",
                 BalanceResponseDto.class);
@@ -68,8 +67,8 @@ public class BalanceControllerTest {
 
     @Test
     public void getBalanceAfterCreditAndDebitPairNegative() throws Exception {
-        credit(50);
-        debit(100);
+        api.credit(50);
+        api.debit(100);
         BalanceResponseDto responseBody = this.restTemplate.getForObject(
                 "http://localhost:" + port + "/balance",
                 BalanceResponseDto.class);
@@ -79,42 +78,14 @@ public class BalanceControllerTest {
 
     @Test
     public void getBalanceAfterCreditAndDebitSeveral() throws Exception {
-        credit(100); // 100
-        debit(20);  // 80
-        credit(100); // 180
-        debit(30); // 150
+        api.credit(100); // 100
+        api.debit(20);  // 80
+        api.credit(100); // 180
+        api.debit(30); // 150
         BalanceResponseDto responseBody = this.restTemplate.getForObject(
                 "http://localhost:" + port + "/balance",
                 BalanceResponseDto.class);
         assertThat(responseBody, notNullValue());
         assertThat(responseBody.getBalance(), is(150));
-    }
-
-
-    private void credit(int amount) {
-        CreateCreditRequestDto requestDto = CreateCreditRequestDto.builder()
-                .amount(amount)
-                .description("some credit")
-                .build();
-        HttpEntity<CreateCreditRequestDto> request = new HttpEntity<>(requestDto);
-        this.restTemplate.postForObject(
-                "http://localhost:" + port + "/credit",
-                request,
-                IdResponseDto.class);
-    }
-
-    private void debit(int amount) {
-        CreateDebitRequestDto requestDto = CreateDebitRequestDto.builder()
-                .amount(amount)
-                .description("some debit")
-                .build();
-        HttpEntity<CreateDebitRequestDto> request = new HttpEntity<>(requestDto);
-        this.restTemplate.postForObject(
-                "http://localhost:" + port + "/debit",
-                request,
-                IdResponseDto.class);
-    }
-    private void reset() {
-        this.restTemplate.postForLocation("http://localhost:" + port + "/reset", null);
     }
 }

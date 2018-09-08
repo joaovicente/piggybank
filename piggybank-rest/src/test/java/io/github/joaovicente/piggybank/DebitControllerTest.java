@@ -3,6 +3,7 @@ package io.github.joaovicente.piggybank;
 import io.github.joaovicente.piggybank.dto.CreateCreditRequestDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import lombok.extern.java.Log;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,14 @@ public class DebitControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    RestApiUtil api;
+
+    @Before
+    public void setup() {
+        api = new RestApiUtil(port, restTemplate);
+        api.reset();
+    }
 
     @Test
     public void createCredit() throws Exception {
