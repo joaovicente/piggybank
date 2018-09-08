@@ -14,14 +14,17 @@ public class CreditController {
 
     @RequestMapping(value = "/credit", method = RequestMethod.POST)
 
-    public CreateCreditRequestDto createCredit(@RequestBody CreateCreditRequestDto createCreditRequestDto) {
+    public IdResponseDto createCredit(@RequestBody CreateCreditRequestDto createCreditRequestDto) {
         Transaction transaction = Transaction.builder()
                 .description(createCreditRequestDto.getDescription())
                 .amount(createCreditRequestDto.getAmount())
                 .kind(Transaction.Kind.CREDIT)
                 .build();
-        transactionRepository.insert(transaction);
-        return createCreditRequestDto;
+	transactionRepository.insert(transaction);
+	IdResponseDto id = IdResponseDto.builder()
+		.id(transaction.getId().toString())
+		.build();
+        return id;
     }
 }
 

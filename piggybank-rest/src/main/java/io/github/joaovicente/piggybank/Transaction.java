@@ -14,9 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transaction {
-    public enum Kind {CREDIT, DEBIT}
+    static public enum Kind {CREDIT, DEBIT}
     @Id
-    private String id;
+    private final UUID id = UUID.randomUUID();
     private Kind kind;
     private String description;
     private int amount;
