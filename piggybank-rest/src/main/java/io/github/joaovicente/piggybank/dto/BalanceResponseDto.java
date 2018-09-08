@@ -1,4 +1,4 @@
-package io.github.joaovicente.piggybank;
+package io.github.joaovicente.piggybank.dto;
 
 import lombok.Builder;
 import lombok.Data;

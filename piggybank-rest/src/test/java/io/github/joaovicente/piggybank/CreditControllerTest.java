@@ -1,5 +1,7 @@
 package io.github.joaovicente.piggybank;
 
+import io.github.joaovicente.piggybank.dto.CreateCreditRequestDto;
+import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import lombok.extern.java.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;

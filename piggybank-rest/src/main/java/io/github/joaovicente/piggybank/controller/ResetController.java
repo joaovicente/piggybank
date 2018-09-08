@@ -1,18 +1,17 @@
-package io.github.joaovicente.piggybank;
+package io.github.joaovicente.piggybank.controller;
 
+import io.github.joaovicente.piggybank.dao.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class ResetController {
     @Autowired
     TransactionRepository transactionRepository;
 
-    @RequestMapping(value = "/reset", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/reset", method = RequestMethod.POST)
 
     public void reset() {
         transactionRepository.deleteAll();

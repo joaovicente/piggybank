@@ -1,5 +1,6 @@
 package io.github.joaovicente.piggybank;
 
+import io.github.joaovicente.piggybank.model.Transaction;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

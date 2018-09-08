@@ -1,5 +1,9 @@
-package io.github.joaovicente.piggybank;
+package io.github.joaovicente.piggybank.controller;
 
+import io.github.joaovicente.piggybank.model.Transaction;
+import io.github.joaovicente.piggybank.dao.TransactionRepository;
+import io.github.joaovicente.piggybank.dto.CreateDebitRequestDto;
+import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
