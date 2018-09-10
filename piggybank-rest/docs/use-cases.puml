@@ -1,7 +1,7 @@
 @startuml
 
-
 actor Teller
+note right of Teller : i.e. Mum and Dad
 
 Teller --> (Record Credit)
 Teller --> (Record Debit)
