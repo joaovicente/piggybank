@@ -1,0 +1,20 @@
+@startuml
+salt
+{
+  Bank of Mum and Dad
+  == | == | == | ==
+  Balance | "40.00"
+
+  [Record Credit]
+  [Record Debit]
+  [See Statement]
+  == | == | == | ==
+  <i>Recent transactions:
+  ..
+
+  <b>Description | <b>Date | <b>Credit | <b>Debit
+  Shopping day | 15-Sep 2018 | . | 20.00
+  Birthday gift from Grandparents | 10-Sep 2018 | 40.00
+
+}
+@enduml

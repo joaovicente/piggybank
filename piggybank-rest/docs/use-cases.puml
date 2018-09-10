@@ -1,0 +1,11 @@
+@startuml
+
+
+actor Teller
+
+Teller --> (Record Credit)
+Teller --> (Record Debit)
+Teller --> (Check balance)
+Teller --> (Get statement)
+
+@enduml

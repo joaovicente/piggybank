@@ -1,0 +1,22 @@
+@startuml
+
+class Bank
+class Customer
+class Teller
+
+package core {
+    class Account
+    class Transaction
+    class Credit
+    class Debit
+}
+
+Debit --|> Transaction
+Credit --|> Transaction
+
+Bank *- Customer
+Customer *- Account
+Account <-- Transaction :  operates \non
+Transaction <-right- Teller : makes
+
+@enduml
