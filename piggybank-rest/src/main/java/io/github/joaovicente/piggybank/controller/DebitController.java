@@ -18,10 +18,12 @@ public class DebitController {
     @RequestMapping(value = "/debit", method = RequestMethod.POST)
 
     public IdResponseDto createDebit(@RequestBody CreateDebitRequestDto createDebitRequestDto) {
+        //TODO: Fill-in today's date if null
         Transaction transaction = Transaction.builder()
                 .description(createDebitRequestDto.getDescription())
                 .amount(createDebitRequestDto.getAmount())
                 .kind(Transaction.Kind.DEBIT)
+                .date(createDebitRequestDto.getDate())
                 .build();
 	transactionRepository.insert(transaction);
 	IdResponseDto id = IdResponseDto.builder()
