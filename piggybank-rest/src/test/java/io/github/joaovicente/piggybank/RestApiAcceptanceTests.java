@@ -104,9 +104,9 @@ public class RestApiAcceptanceTests {
         responseBody =
                 given()
                         .contentType(ContentType.JSON)
-                        .when()
+                .when()
                         .get("/statement")
-                        .then()
+                .then()
                         .statusCode(HttpStatus.SC_OK)
                         .body("transactions[1].id", is(debitTransactionId))
                         .body("transactions[1].date", is(DEBIT_DATE))
@@ -122,11 +122,67 @@ public class RestApiAcceptanceTests {
                         .response();
         log.info("GET /statements OUT: " + responseBody.asString());
 
-        //TODO: Check balance
+        // GET /balance
+        responseBody =
+                given()
+                        .contentType(ContentType.JSON)
+                .when()
+                        .get("/balance")
+                .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .body("balance", is(BALANCE))
+                        .extract()
+                        .response();
+        log.info("GET /balance OUT: " + responseBody.asString());
         //TODO: Test the latest transaction is the top of the list (incorrect behavior currently)
-        //TODO: Pull out into acceptance test
     }
 
-    // TODO: Test negative debits return error
-    // TODO: Test negative credits return error
+
+    @Test
+    public void negativeCreditTest() {
+        final int NEGATIVE_AMOUNT = -1;
+
+        // POST /credit 50
+        String requestBody =
+                "{" +
+                        "\"amount\":" + Integer.toString(NEGATIVE_AMOUNT) +
+                "}";
+        Response responseBody =
+                given()
+                        .body(requestBody)
+                        .contentType(ContentType.JSON)
+                .when()
+                        .post("/credit")
+                .then()
+                        .statusCode(HttpStatus.SC_BAD_REQUEST)
+                        .body("error", is("INVALID_CREDIT_AMOUNT"))
+                        .body("message", is("Negative values are not allowed"))
+                        .extract()
+                        .response();
+        log.info("POST /credit " + "IN: " + requestBody + " OUT: " + responseBody.asString());
+    }
+
+    @Test
+    public void negativeDebitTest() {
+        final int NEGATIVE_AMOUNT = -1;
+
+        // POST /debit 50
+        String requestBody =
+                "{" +
+                        "\"amount\":" + Integer.toString(NEGATIVE_AMOUNT) +
+                "}";
+        Response responseBody =
+                given()
+                        .body(requestBody)
+                        .contentType(ContentType.JSON)
+                .when()
+                        .post("/debit")
+                .then()
+                        .statusCode(HttpStatus.SC_BAD_REQUEST)
+                        .body("error", is("INVALID_DEBIT_AMOUNT"))
+                        .body("message", is("Negative values are not allowed"))
+                        .extract()
+                        .response();
+        log.info("POST /credit " + "IN: " + requestBody + " OUT: " + responseBody.asString());
+    }
 }
