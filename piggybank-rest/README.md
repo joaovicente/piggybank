@@ -1,3 +1,12 @@
+#Notes
+
+Testing with de.flapdoodle.embed.mongo requires proxy from behind a corporate proxy
+```
+$ mvn test -Dhttps.proxyHost=myproxy -Dhttps.proxyPort=8080
+```
+
+---
+
 ## Create project
 
 ```
