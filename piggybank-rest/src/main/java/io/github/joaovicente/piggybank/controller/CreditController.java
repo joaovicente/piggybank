@@ -1,5 +1,7 @@
 package io.github.joaovicente.piggybank.controller;
 
+import io.github.joaovicente.piggybank.dto.ErrorDto;
+import io.github.joaovicente.piggybank.exception.RestResponseException;
 import io.github.joaovicente.piggybank.model.Transaction;
 import io.github.joaovicente.piggybank.dao.TransactionRepository;
 import io.github.joaovicente.piggybank.dto.CreateCreditRequestDto;
@@ -25,6 +27,13 @@ public class CreditController {
                 .kind(Transaction.Kind.CREDIT)
                 .date(createCreditRequestDto.getDate())
                 .build();
+        if (createCreditRequestDto.getAmount() < 0) {
+            ErrorDto errorDto = ErrorDto.builder()
+                    .error("INVALID_CREDIT_AMOUNT")
+                    .message("Negative values are not allowed")
+                    .build();
+            throw new RestResponseException(errorDto);
+        }
 	transactionRepository.insert(transaction);
 	IdResponseDto id = IdResponseDto.builder()
 		.id(transaction.getId().toString())
