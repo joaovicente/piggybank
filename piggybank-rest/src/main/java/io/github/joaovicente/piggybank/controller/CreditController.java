@@ -18,10 +18,12 @@ public class CreditController {
     @RequestMapping(value = "/credit", method = RequestMethod.POST)
 
     public IdResponseDto createCredit(@RequestBody CreateCreditRequestDto createCreditRequestDto) {
+        //TODO: Fill-in today's date if null
         Transaction transaction = Transaction.builder()
                 .description(createCreditRequestDto.getDescription())
                 .amount(createCreditRequestDto.getAmount())
                 .kind(Transaction.Kind.CREDIT)
+                .date(createCreditRequestDto.getDate())
                 .build();
 	transactionRepository.insert(transaction);
 	IdResponseDto id = IdResponseDto.builder()

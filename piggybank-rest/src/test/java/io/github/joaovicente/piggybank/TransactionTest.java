@@ -19,7 +19,5 @@ public class TransactionTest {
         assertSame(transaction.getDescription(), SOME_DESCRIPTION);
         assertSame(transaction.getAmount(), 10);
         assertSame(transaction.getKind(), Transaction.Kind.CREDIT);
-//        System.out.println(transaction.toString());
     }
-
 }
