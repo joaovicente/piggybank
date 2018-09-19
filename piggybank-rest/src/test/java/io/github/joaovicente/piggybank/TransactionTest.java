@@ -16,8 +16,8 @@ public class TransactionTest {
                 .kind(Transaction.Kind.CREDIT)
                 .build();
 
-        assertSame(transaction.getDescription(), SOME_DESCRIPTION);
-        assertSame(transaction.getAmount(), 10);
-        assertSame(transaction.getKind(), Transaction.Kind.CREDIT);
+        assertSame(SOME_DESCRIPTION, transaction.getDescription());
+        assertSame(10, transaction.getAmount());
+        assertSame(Transaction.Kind.CREDIT, transaction.getKind());
     }
 }
