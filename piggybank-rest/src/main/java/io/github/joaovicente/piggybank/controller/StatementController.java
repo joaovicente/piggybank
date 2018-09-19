@@ -28,10 +28,9 @@ public class StatementController {
 	    for (Transaction transaction : transactions) {
             transactionDtos.add(transactionMapper.toDto(transaction));
         }
-        StatementDto statement = StatementDto.builder()
+        return StatementDto.builder()
                 .transactions(transactionDtos)
                 .build();
-	    return statement;
     }
 }
 

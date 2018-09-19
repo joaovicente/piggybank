@@ -26,10 +26,9 @@ public class BalanceController {
             else if (transaction.getKind() == Transaction.Kind.DEBIT)
                 balance = balance - transaction.getAmount();
         }
-        BalanceResponseDto balanceResponseDto = BalanceResponseDto.builder()
+        return BalanceResponseDto.builder()
                 .balance(balance)
                 .build();
-	    return balanceResponseDto;
     }
 }
 

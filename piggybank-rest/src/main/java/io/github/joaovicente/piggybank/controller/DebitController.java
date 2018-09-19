@@ -1,5 +1,6 @@
 package io.github.joaovicente.piggybank.controller;
 
+import io.github.joaovicente.piggybank.dto.CreateDebitResponseDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.exception.RestResponseException;
 import io.github.joaovicente.piggybank.model.Transaction;
@@ -12,15 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @RestController
 public class DebitController {
     @Autowired
     TransactionRepository transactionRepository;
 
     @RequestMapping(value = "/debit", method = RequestMethod.POST)
-
-    public IdResponseDto createDebit(@RequestBody CreateDebitRequestDto createDebitRequestDto) {
-        //TODO: Fill-in today's date if null
+    public CreateDebitResponseDto createDebit(@RequestBody CreateDebitRequestDto createDebitRequestDto) {
+        // Fill-in today's date if null
+        if (createDebitRequestDto.getDate() == null)   {
+            createDebitRequestDto.setDate(new Date());
+        }
         if (createDebitRequestDto.getAmount() < 0) {
             ErrorDto errorDto = ErrorDto.builder()
                     .error("INVALID_DEBIT_AMOUNT")
@@ -35,10 +40,12 @@ public class DebitController {
                 .date(createDebitRequestDto.getDate())
                 .build();
 	transactionRepository.insert(transaction);
-	IdResponseDto id = IdResponseDto.builder()
-		.id(transaction.getId().toString())
-		.build();
-        return id;
+    return CreateDebitResponseDto.builder()
+            .id(transaction.getId())
+            .description(transaction.getDescription())
+            .date(transaction.getDate())
+            .amount(transaction.getAmount())
+            .build();
     }
 }
 

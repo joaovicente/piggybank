@@ -14,6 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static io.restassured.RestAssured.*;
 import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.*;
@@ -40,7 +44,7 @@ public class RestApiAcceptanceTests {
     }
 
     @Test
-    public void acceptanceTest()  {
+    public void whenICreditAndDebit_thenIGetCorrectBalanceAndStatement()  {
         // Credit
         final String CREDIT_DATE = "2018-01-01";
         final String CREDIT_DESCRIPTION = "my credit";
@@ -139,10 +143,10 @@ public class RestApiAcceptanceTests {
 
 
     @Test
-    public void negativeCreditTest() {
+    public void whenIPostNegativeCredit_thenIgetAnError() {
         final int NEGATIVE_AMOUNT = -1;
 
-        // POST /credit 50
+        // POST /credit -1
         String requestBody =
                 "{" +
                         "\"amount\":" + Integer.toString(NEGATIVE_AMOUNT) +
@@ -163,7 +167,7 @@ public class RestApiAcceptanceTests {
     }
 
     @Test
-    public void negativeDebitTest() {
+    public void whenIPostNegativeDebit_thenIgetAnError() {
         final int NEGATIVE_AMOUNT = -1;
 
         // POST /debit 50
@@ -181,6 +185,61 @@ public class RestApiAcceptanceTests {
                         .statusCode(HttpStatus.SC_BAD_REQUEST)
                         .body("error", is("INVALID_DEBIT_AMOUNT"))
                         .body("message", is("Negative values are not allowed"))
+                        .extract()
+                        .response();
+        log.info("POST /credit " + "IN: " + requestBody + " OUT: " + responseBody.asString());
+    }
+
+
+    @Test
+    public void whenIPostCreditWithoutDate_thenIgetTodaysDate() {
+        final int AMOUNT = 50;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String todaysDate = dateFormat.format(date);
+
+        // POST /credit 50 without date
+        String requestBody =
+                "{" +
+                        "\"amount\":" + Integer.toString(AMOUNT) +
+                "}";
+        Response responseBody =
+                given()
+                        .body(requestBody)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post("/credit")
+                .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .body("date", is(todaysDate))
+                        .extract()
+                        .response();
+        log.info("POST /credit " + "IN: " + requestBody + " OUT: " + responseBody.asString());
+    }
+
+    @Test
+    public void whenIPostDebitWithoutDate_thenIgetTodaysDate() {
+        final int AMOUNT = 50;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        String todaysDate = dateFormat.format(date);
+
+        // POST /credit 50 without date
+        String requestBody =
+                "{" +
+                        "\"amount\":" + Integer.toString(AMOUNT) +
+                "}";
+        Response responseBody =
+                given()
+                        .body(requestBody)
+                        .contentType(ContentType.JSON)
+                .when()
+                        .post("/debit")
+                .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .body("date", is(todaysDate))
                         .extract()
                         .response();
         log.info("POST /credit " + "IN: " + requestBody + " OUT: " + responseBody.asString());
