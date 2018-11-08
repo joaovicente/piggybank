@@ -2,12 +2,10 @@ package io.github.joaovicente.piggybank.controller;
 
 import io.github.joaovicente.piggybank.dto.CreateDebitResponseDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
-import io.github.joaovicente.piggybank.exception.RestResponseException;
 import io.github.joaovicente.piggybank.model.Transaction;
 import io.github.joaovicente.piggybank.dao.TransactionRepository;
 import io.github.joaovicente.piggybank.dto.CreateDebitRequestDto;
-import io.github.joaovicente.piggybank.dto.IdResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,8 +15,7 @@ import java.util.Date;
 
 @RestController
 public class DebitController {
-    @Autowired
-    TransactionRepository transactionRepository;
+    private TransactionRepository transactionRepository;
 
     @RequestMapping(value = "/debit", method = RequestMethod.POST)
     public CreateDebitResponseDto createDebit(@RequestBody CreateDebitRequestDto createDebitRequestDto) {
@@ -31,7 +28,7 @@ public class DebitController {
                     .error("INVALID_DEBIT_AMOUNT")
                     .message("Negative values are not allowed")
                     .build();
-           throw new RestResponseException(errorDto);
+           throw new RestResponseException(errorDto, HttpStatus.BAD_REQUEST);
         }
         Transaction transaction = Transaction.builder()
                 .description(createDebitRequestDto.getDescription())
