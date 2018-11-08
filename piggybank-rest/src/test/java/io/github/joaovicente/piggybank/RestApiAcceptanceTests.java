@@ -218,6 +218,35 @@ public class RestApiAcceptanceTests {
         log.info("POST /credit " + "IN: " + requestBody + " OUT: " + responseBody.asString());
     }
 
+//    @Test
+//    public void whenIPostCreditBadDate_thenIgetAnError() {
+//        final int AMOUNT = 50;
+//
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date = new Date();
+//        String todaysDate = dateFormat.format(date);
+//
+//        // POST /credit 50 without date
+//        String requestBody =
+//                "{" +
+//                        "\"amount\":" + Integer.toString(AMOUNT) +
+//                        "\"date\":" + "abcd" +
+//
+//                "}";
+//        Response responseBody =
+//                given()
+//                        .body(requestBody)
+//                        .contentType(ContentType.JSON)
+//                .when()
+//                        .post("/credit")
+//                .then()
+//                        .statusCode(HttpStatus.SC_BAD_REQUEST)
+//                        .body("error", isA(String.class))
+//                        .extract()
+//                        .response();
+//        log.info("POST /credit " + "IN: " + requestBody + " OUT: " + responseBody.asString());
+//    }
+
     @Test
     public void whenIPostDebitWithoutDate_thenIgetTodaysDate() {
         final int AMOUNT = 50;
