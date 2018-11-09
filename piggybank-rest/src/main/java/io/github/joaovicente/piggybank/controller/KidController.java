@@ -45,4 +45,23 @@ public class KidController {
         }
         return dto;
     }
+
+
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @RequestMapping(value = "/kids/{id}", method = RequestMethod.DELETE)
+    public void deleteKid(@PathVariable(name="id") String id )    {
+        try {
+            kidService.deleteKidById(id);
+        }
+        catch(EntityNotFoundException e)  {
+            ErrorDto errorDto = ErrorDto.builder()
+                    .error("NOT_FOUND")
+                    .message("Supplied kid id was not found")
+                    .build();
+            throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
+        }
+    }
 }
