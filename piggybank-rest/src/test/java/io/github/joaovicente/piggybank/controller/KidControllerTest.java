@@ -2,13 +2,12 @@ package io.github.joaovicente.piggybank.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.joaovicente.piggybank.dto.CreateKidRequestDto;
-import io.github.joaovicente.piggybank.dto.GetKidResponseDto;
+import io.github.joaovicente.piggybank.dto.KidWriteDto;
+import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.service.EntityNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -39,7 +38,7 @@ public class KidControllerTest {
     public void createKid() throws Exception {
         final String ID = "1";
         final String NAME = "Albert";
-        final CreateKidRequestDto kid = CreateKidRequestDto.builder()
+        final KidWriteDto kid = KidWriteDto.builder()
                 .name(NAME)
                 .build();
 
@@ -64,7 +63,7 @@ public class KidControllerTest {
     public void getKid() throws Exception {
         final String ID = "1";
         final String NAME = "Albert";
-        final GetKidResponseDto kid = GetKidResponseDto.builder()
+        final KidReadDto kid = KidReadDto.builder()
                 .id(ID)
                 .name(NAME)
                 .build();

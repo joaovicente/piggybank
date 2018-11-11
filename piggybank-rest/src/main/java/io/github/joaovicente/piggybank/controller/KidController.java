@@ -1,8 +1,8 @@
 package io.github.joaovicente.piggybank.controller;
 
-import io.github.joaovicente.piggybank.dto.CreateKidRequestDto;
+import io.github.joaovicente.piggybank.dto.KidWriteDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
-import io.github.joaovicente.piggybank.dto.GetKidResponseDto;
+import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.service.EntityNotFoundException;
 import io.github.joaovicente.piggybank.service.KidService;
@@ -21,8 +21,12 @@ public class KidController {
         this.kidService = kidService;
     }
 
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            // TODO: Validate payload and return 400 if not ok
+    })
     @RequestMapping(value = "/kids", method = RequestMethod.POST)
-    public IdResponseDto createKid(@RequestBody CreateKidRequestDto reqBody)    {
+    public IdResponseDto createKid(@RequestBody KidWriteDto reqBody)    {
         return kidService.createKid(reqBody);
     }
 
@@ -31,8 +35,8 @@ public class KidController {
             @ApiResponse(code = 404, message = "Not Found")
     })
     @RequestMapping(value = "/kids/{id}", method = RequestMethod.GET)
-    public GetKidResponseDto getKid(@PathVariable(name="id") String id )    {
-        GetKidResponseDto dto;
+    public KidReadDto getKid(@PathVariable(name="id") String id )    {
+        KidReadDto dto;
         try {
             dto = kidService.getKidById(id);
         }

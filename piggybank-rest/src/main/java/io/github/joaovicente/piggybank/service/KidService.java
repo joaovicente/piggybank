@@ -1,8 +1,8 @@
 package io.github.joaovicente.piggybank.service;
 
 import io.github.joaovicente.piggybank.dao.KidRepository;
-import io.github.joaovicente.piggybank.dto.CreateKidRequestDto;
-import io.github.joaovicente.piggybank.dto.GetKidResponseDto;
+import io.github.joaovicente.piggybank.dto.KidWriteDto;
+import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.model.Kid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class KidService {
         this.kidRepository = kidRepository;
     }
 
-    public IdResponseDto createKid(CreateKidRequestDto req) {
+    public IdResponseDto createKid(KidWriteDto req) {
         Kid kid = Kid.builder()
                 .name(req.getName())
                 .build();
@@ -27,12 +27,12 @@ public class KidService {
         return new IdResponseDto(kid.getId());
     }
 
-    public GetKidResponseDto getKidById(String id)  {
+    public KidReadDto getKidById(String id)  {
         Optional<Kid> optionalKid = kidRepository.findById(id);
-        GetKidResponseDto dto;
+        KidReadDto dto;
         if (optionalKid.isPresent())  {
             Kid kid = optionalKid.get();
-            dto = GetKidResponseDto.builder()
+            dto = KidReadDto.builder()
                     .id(kid.getId())
                     .name(kid.getName())
                     .build();
