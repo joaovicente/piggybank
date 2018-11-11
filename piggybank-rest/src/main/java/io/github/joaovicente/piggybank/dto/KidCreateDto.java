@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Builder
 @Data
-public class KidWriteDto {
+public class KidCreateDto {
     String name;
 }

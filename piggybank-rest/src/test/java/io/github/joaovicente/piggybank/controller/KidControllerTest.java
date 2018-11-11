@@ -2,7 +2,7 @@ package io.github.joaovicente.piggybank.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.joaovicente.piggybank.dto.KidWriteDto;
+import io.github.joaovicente.piggybank.dto.KidCreateDto;
 import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.service.EntityNotFoundException;
@@ -38,7 +38,7 @@ public class KidControllerTest {
     public void createKid() throws Exception {
         final String ID = "1";
         final String NAME = "Albert";
-        final KidWriteDto kid = KidWriteDto.builder()
+        final KidCreateDto kid = KidCreateDto.builder()
                 .name(NAME)
                 .build();
 

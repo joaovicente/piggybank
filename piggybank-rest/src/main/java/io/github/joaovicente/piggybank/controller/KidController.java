@@ -1,6 +1,6 @@
 package io.github.joaovicente.piggybank.controller;
 
-import io.github.joaovicente.piggybank.dto.KidWriteDto;
+import io.github.joaovicente.piggybank.dto.KidCreateDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
@@ -26,7 +26,7 @@ public class KidController {
             // TODO: Validate payload and return 400 if not ok
     })
     @RequestMapping(value = "/kids", method = RequestMethod.POST)
-    public IdResponseDto createKid(@RequestBody KidWriteDto reqBody)    {
+    public IdResponseDto createKid(@RequestBody KidCreateDto reqBody)    {
         return kidService.createKid(reqBody);
     }
 

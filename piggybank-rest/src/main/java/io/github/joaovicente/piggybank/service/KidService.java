@@ -1,7 +1,7 @@
 package io.github.joaovicente.piggybank.service;
 
 import io.github.joaovicente.piggybank.dao.KidRepository;
-import io.github.joaovicente.piggybank.dto.KidWriteDto;
+import io.github.joaovicente.piggybank.dto.KidCreateDto;
 import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.model.Kid;
@@ -19,7 +19,7 @@ public class KidService {
         this.kidRepository = kidRepository;
     }
 
-    public IdResponseDto createKid(KidWriteDto req) {
+    public IdResponseDto createKid(KidCreateDto req) {
         Kid kid = Kid.builder()
                 .name(req.getName())
                 .build();
