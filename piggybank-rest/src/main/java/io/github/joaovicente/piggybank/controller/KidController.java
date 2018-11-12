@@ -26,7 +26,7 @@ public class KidController {
 
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 200, message = "Bad Request"),
+            @ApiResponse(code = 400, message = "Bad Request"),
     })
     @RequestMapping(value = "/kids", method = RequestMethod.POST)
     public IdResponseDto createKid(@Valid @RequestBody KidCreateDto reqBody)    {
