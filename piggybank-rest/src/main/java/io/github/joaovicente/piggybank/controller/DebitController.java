@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.Collections;
 import java.util.Date;
 
 @RestController
@@ -26,7 +26,7 @@ public class DebitController {
         if (createDebitRequestDto.getAmount() < 0) {
             ErrorDto errorDto = ErrorDto.builder()
                     .error("INVALID_DEBIT_AMOUNT")
-                    .message("Negative values are not allowed")
+                    .message(Collections.singletonList("Negative values are not allowed"))
                     .build();
            throw new RestResponseException(errorDto, HttpStatus.BAD_REQUEST);
         }

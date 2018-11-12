@@ -14,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import io.github.joaovicente.piggybank.service.KidService;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @RunWith(SpringRunner.class)
@@ -57,7 +60,42 @@ public class KidControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(ID));
     }
 
-    //TODO: Create kid without supplying name should return HTTP status 4xx
+    @Test
+    public void createKidWithEmptyName() throws Exception {
+        final String NAME = "";
+        final KidCreateDto kid = KidCreateDto.builder()
+                .name(NAME)
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String kidAsJson = objectMapper.writeValueAsString(kid);
+
+        this.mvc.perform(post("/kids").contentType(MediaType.APPLICATION_JSON)
+                .content(kidAsJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("name cannot be empty"));
+    }
+
+    @Test
+    public void createKidWithoutName() throws Exception {
+        this.mvc.perform(post("/kids").contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[*]")
+                        .value(containsInAnyOrder("name cannot be empty","name cannot be null")));
+    }
+
+    @Test
+    public void createKidWithNullName() throws Exception {
+        this.mvc.perform(post("/kids").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":null}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[*]")
+                        .value(containsInAnyOrder("name cannot be empty","name cannot be null")));
+    }
 
     @Test
     public void getKid() throws Exception {
@@ -85,7 +123,7 @@ public class KidControllerTest {
         this.mvc.perform(get("/kids/" + ID).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Supplied kid id was not found"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("Supplied kid id was not found"));
     }
 
 
@@ -107,7 +145,7 @@ public class KidControllerTest {
         this.mvc.perform(delete("/kids/" + ID).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Supplied kid id was not found"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("Supplied kid id was not found"));
     }
 
 }

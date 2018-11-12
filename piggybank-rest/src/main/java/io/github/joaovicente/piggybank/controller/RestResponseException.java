@@ -4,10 +4,10 @@ import io.github.joaovicente.piggybank.dto.ErrorDto;
 import org.springframework.http.HttpStatus;
 
 public class RestResponseException extends RuntimeException {
-    private final ErrorDto errorDto;
+    private final transient ErrorDto errorDto;
     private final HttpStatus status;
 
-    public RestResponseException(ErrorDto errorDto, HttpStatus status) {
+    RestResponseException(ErrorDto errorDto, HttpStatus status) {
         this.errorDto = errorDto;
         this.status = status;
     }

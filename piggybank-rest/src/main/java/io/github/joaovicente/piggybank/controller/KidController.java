@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.Collections;
+
 @RestController
 public class KidController {
     private final KidService kidService;
@@ -23,10 +26,10 @@ public class KidController {
 
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            // TODO: Validate payload and return 400 if not ok
+            @ApiResponse(code = 200, message = "Bad Request"),
     })
     @RequestMapping(value = "/kids", method = RequestMethod.POST)
-    public IdResponseDto createKid(@RequestBody KidCreateDto reqBody)    {
+    public IdResponseDto createKid(@Valid @RequestBody KidCreateDto reqBody)    {
         return kidService.createKid(reqBody);
     }
 
@@ -41,9 +44,10 @@ public class KidController {
             dto = kidService.getKidById(id);
         }
         catch(EntityNotFoundException e)  {
+
             ErrorDto errorDto = ErrorDto.builder()
                     .error("NOT_FOUND")
-                    .message("Supplied kid id was not found")
+                    .message(Collections.singletonList("Supplied kid id was not found"))
                     .build();
             throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
         }
@@ -63,7 +67,7 @@ public class KidController {
         catch(EntityNotFoundException e)  {
             ErrorDto errorDto = ErrorDto.builder()
                     .error("NOT_FOUND")
-                    .message("Supplied kid id was not found")
+                    .message(Collections.singletonList("Supplied kid id was not found"))
                     .build();
             throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
         }
