@@ -28,7 +28,7 @@ public class KidController {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Bad Request"),
     })
-    @RequestMapping(value = "/kids", method = RequestMethod.POST)
+    @PostMapping(value = "/kids")
     public IdResponseDto createKid(@Valid @RequestBody KidCreateDto reqBody)    {
         return kidService.createKid(reqBody);
     }
@@ -37,7 +37,7 @@ public class KidController {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @RequestMapping(value = "/kids/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/kids/{id}")
     public KidReadDto getKid(@PathVariable(name="id") String id )    {
         KidReadDto dto;
         try {
@@ -59,7 +59,7 @@ public class KidController {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @RequestMapping(value = "/kids/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/kids/{id}")
     public void deleteKid(@PathVariable(name="id") String id )    {
         try {
             kidService.deleteKidById(id);
