@@ -82,7 +82,7 @@ public class KidServiceTest {
         assertThat(actual).isEqualTo(kidReadDto);
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test(expected = KidNotFoundException.class)
     public void getKidNotFound() {
         String ID = "c9635e84-4111-4de9-b896-f506fc7bc25b";
 
@@ -108,7 +108,7 @@ public class KidServiceTest {
                 .deleteById(ID);
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test(expected = KidNotFoundException.class)
     public void deleteKidNotFound() throws Exception {
         String ID = "c9635e84-4111-4de9-b896-f506fc7bc25b";
 

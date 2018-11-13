@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.joaovicente.piggybank.dto.KidCreateDto;
 import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
-import io.github.joaovicente.piggybank.service.EntityNotFoundException;
+import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import io.github.joaovicente.piggybank.service.KidService;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @RunWith(SpringRunner.class)
@@ -118,7 +117,7 @@ public class KidControllerTest {
     public void getKidNotFound() throws Exception {
         final String ID = "1";
 
-        given(this.kidService.getKidById(ID)).willThrow(new EntityNotFoundException());
+        given(this.kidService.getKidById(ID)).willThrow(new KidNotFoundException());
 
         this.mvc.perform(get("/kids/" + ID).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -140,7 +139,7 @@ public class KidControllerTest {
     public void deleteKidNotFound() throws Exception {
         final String ID = "1";
 
-        doThrow(EntityNotFoundException.class).when(kidService).deleteKidById(ID);
+        doThrow(KidNotFoundException.class).when(kidService).deleteKidById(ID);
 
         this.mvc.perform(delete("/kids/" + ID).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())

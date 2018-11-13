@@ -38,7 +38,7 @@ public class KidService {
                     .build();
         }
         else {
-            throw new EntityNotFoundException();
+            throw new KidNotFoundException();
         }
         return dto;
     }
@@ -48,7 +48,7 @@ public class KidService {
             kidRepository.deleteById(id);
         }
         else    {
-            throw new EntityNotFoundException();
+            throw new KidNotFoundException();
         }
     }
 }

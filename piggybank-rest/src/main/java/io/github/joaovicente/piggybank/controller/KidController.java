@@ -4,7 +4,7 @@ import io.github.joaovicente.piggybank.dto.KidCreateDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
-import io.github.joaovicente.piggybank.service.EntityNotFoundException;
+import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import io.github.joaovicente.piggybank.service.KidService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -43,7 +43,7 @@ public class KidController {
         try {
             dto = kidService.getKidById(id);
         }
-        catch(EntityNotFoundException e)  {
+        catch(KidNotFoundException e)  {
 
             ErrorDto errorDto = ErrorDto.builder()
                     .error("NOT_FOUND")
@@ -64,7 +64,7 @@ public class KidController {
         try {
             kidService.deleteKidById(id);
         }
-        catch(EntityNotFoundException e)  {
+        catch(KidNotFoundException e)  {
             ErrorDto errorDto = ErrorDto.builder()
                     .error("NOT_FOUND")
                     .message(Collections.singletonList("Supplied kid id was not found"))

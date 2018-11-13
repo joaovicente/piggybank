@@ -16,6 +16,11 @@ import java.util.List;
 public class TransactionController {
     private TransactionService transactionService;
 
+    @Autowired
+    TransactionController(TransactionService transactionService)   {
+        this.transactionService = transactionService;
+    }
+
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Bad Request"),
