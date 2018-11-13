@@ -47,7 +47,7 @@ public class KidController {
 
             ErrorDto errorDto = ErrorDto.builder()
                     .error("NOT_FOUND")
-                    .message(Collections.singletonList("Supplied kid id was not found"))
+                    .message(Collections.singletonList("kidId not found"))
                     .build();
             throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
         }

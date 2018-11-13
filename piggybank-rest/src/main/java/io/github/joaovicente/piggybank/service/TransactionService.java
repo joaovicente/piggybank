@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class TransactionService {
 
-    public IdResponseDto createTransaction(String kidId, TransactionCreateDto dto) {
+    public IdResponseDto createTransaction(TransactionCreateDto dto) {
         return null;
     }
 
@@ -18,7 +18,7 @@ public class TransactionService {
         return null;
     }
 
-    public void deleteTransaction(String kidId, String transactionId)   {
+    public void deleteTransaction(String transactionId)   {
     }
 
 }

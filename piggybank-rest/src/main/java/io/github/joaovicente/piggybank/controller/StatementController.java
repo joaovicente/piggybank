@@ -2,7 +2,7 @@ package io.github.joaovicente.piggybank.controller;
 
 import io.github.joaovicente.piggybank.model.Transaction;
 import io.github.joaovicente.piggybank.mapper.TransactionMapper;
-import io.github.joaovicente.piggybank.dao.TransactionRepository;
+import io.github.joaovicente.piggybank.repository.TransactionRepository;
 import io.github.joaovicente.piggybank.dto.StatementDto;
 import io.github.joaovicente.piggybank.dto.TransactionResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;

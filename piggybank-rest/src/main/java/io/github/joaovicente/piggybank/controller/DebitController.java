@@ -3,7 +3,7 @@ package io.github.joaovicente.piggybank.controller;
 import io.github.joaovicente.piggybank.dto.CreateDebitResponseDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.model.Transaction;
-import io.github.joaovicente.piggybank.dao.TransactionRepository;
+import io.github.joaovicente.piggybank.repository.TransactionRepository;
 import io.github.joaovicente.piggybank.dto.CreateDebitRequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;

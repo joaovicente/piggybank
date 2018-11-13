@@ -13,6 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
 public class TransactionReadDto {
     String id;
+    String kidId;
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd")
     private Date date;
     private TransactionKindDto kind;

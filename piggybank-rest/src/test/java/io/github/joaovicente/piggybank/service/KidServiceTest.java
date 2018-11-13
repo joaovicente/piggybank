@@ -15,7 +15,7 @@ import static org.mockito.BDDMockito.then;
 
 import io.github.joaovicente.piggybank.model.Kid;
 
-import io.github.joaovicente.piggybank.dao.KidRepository;
+import io.github.joaovicente.piggybank.repository.KidRepository;
 
 import java.util.Optional;
 import java.util.UUID;

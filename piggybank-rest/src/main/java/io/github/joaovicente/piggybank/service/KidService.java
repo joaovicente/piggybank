@@ -1,6 +1,6 @@
 package io.github.joaovicente.piggybank.service;
 
-import io.github.joaovicente.piggybank.dao.KidRepository;
+import io.github.joaovicente.piggybank.repository.KidRepository;
 import io.github.joaovicente.piggybank.dto.KidCreateDto;
 import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;

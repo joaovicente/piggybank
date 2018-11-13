@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @Data
 public class KidCreateDto {
-    @NotNull(message = "cannot be null")
-    @NotBlank(message = "cannot be empty")
+    @NotNull(message = "must not be null")
+    @NotBlank(message = "must not be empty")
     String name;
 }
