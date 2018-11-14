@@ -17,6 +17,7 @@ public class Transaction {
     public enum Kind {CREDIT, DEBIT}
     @Id
     private final String id = UUID.randomUUID().toString();
+    private String kidId;
     private Date date;
     private Kind kind;
     private String description;

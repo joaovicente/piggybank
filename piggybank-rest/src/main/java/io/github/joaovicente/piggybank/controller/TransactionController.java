@@ -5,6 +5,7 @@ import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.dto.TransactionCreateDto;
 import io.github.joaovicente.piggybank.dto.TransactionReadDto;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
+import io.github.joaovicente.piggybank.service.TransactionNotFoundException;
 import io.github.joaovicente.piggybank.service.TransactionService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -54,7 +55,16 @@ public class TransactionController {
     @DeleteMapping(path="/transactions/{transactionId}")
     public void deleteTransaction(
             @PathVariable(name="transactionId") String transactionId) {
-        transactionService.deleteTransaction(transactionId);
+        try {
+            transactionService.deleteTransaction(transactionId);
+        }
+        catch(TransactionNotFoundException e)  {
+            ErrorDto errorDto = ErrorDto.builder()
+                    .error("NOT_FOUND")
+                    .message(Collections.singletonList("transactionId not found"))
+                    .build();
+            throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
+        }
     }
 
     @ApiResponses({
@@ -63,6 +73,17 @@ public class TransactionController {
     })
     @GetMapping(path="/transactions")
     public List<TransactionReadDto> getTransactions(@RequestParam(name="kidId") String kidId) {
-        return transactionService.getTransactions(kidId);
+        List<TransactionReadDto> response;
+        try {
+            response = transactionService.getTransactions(kidId);
+        }
+        catch(KidNotFoundException e)  {
+            ErrorDto errorDto = ErrorDto.builder()
+                    .error("NOT_FOUND")
+                    .message(Collections.singletonList("kidId not found"))
+                    .build();
+            throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 }

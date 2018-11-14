@@ -1,10 +1,10 @@
 package io.github.joaovicente.piggybank.controller;
 
 
-import io.github.joaovicente.piggybank.dto.IdResponseDto;
-import io.github.joaovicente.piggybank.dto.TransactionCreateDto;
-import io.github.joaovicente.piggybank.dto.TransactionKindDto;
+import io.github.joaovicente.piggybank.dto.*;
+import io.github.joaovicente.piggybank.model.Transaction;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
+import io.github.joaovicente.piggybank.service.TransactionNotFoundException;
 import io.github.joaovicente.piggybank.service.TransactionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +16,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,22 +41,40 @@ public class TransactionControllerTest {
     @MockBean
     private TransactionService transactionService;
     private final String KID_ID1  = "k1";
+    private final String KID_ID2  = "k2";
     private final String TRANSACTION_ID1  = "t1";
-    private final String AMOUNT_100 = "100";
+    private final int AMOUNT_100 = 100;
+    private final String AMOUNT_100_STR = Integer.toString(AMOUNT_100);
+    private final int AMOUNT_200 = 200;
+    private final String AMOUNT_200_STR = Integer.toString(AMOUNT_200);
     private final String AMOUNT_0 = "0";
-    private final String DATE1 = "2018-11-12";
+    private final String DATE1_STR = "2017-01-01";
+    private final Date DATE1 = parseDate(DATE1_STR);
+    private final String DATE2_STR = "2018-02-02";
+    private final Date DATE2 = parseDate(DATE2_STR);
     private final String KIND_BAD = "BAD_KIND";
-    private final String CREDIT_DESCRIPTION1 = "Gift from grandparents";
+    private final String DESCRIPTION_CREDIT1 = "Gift from grandparents";
+    private final String DESCRIPTION_DEBIT1 = "Shopping day";
+
+    public static Date parseDate(String dateStr) {
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 
     @Test
     public void createTransaction() throws Exception {
         String transaction =
                 "{" +
                     "\"kidId\":\"" + KID_ID1 + "\"," +
-                    "\"date\":\"" + DATE1 + "\"," +
+                    "\"date\":\"" + DATE1_STR + "\"," +
                     "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
-                    "\"amount\":" + AMOUNT_100 + "," +
-                    "\"description\":\"" + CREDIT_DESCRIPTION1 + "\"" +
+                    "\"amount\":" + AMOUNT_100_STR + "," +
+                    "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                 "}";
 
         final IdResponseDto rspDto = IdResponseDto.builder()
@@ -70,10 +95,10 @@ public class TransactionControllerTest {
         String transaction =
                 "{" +
                     "\"kidId\":\"" + KID_ID1 + "\"," +
-                    "\"date\":\"" + DATE1 + "\"," +
+                    "\"date\":\"" + DATE1_STR + "\"," +
                     "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
                     "\"amount\":" + AMOUNT_0 + "," +
-                    "\"description\":\"" + CREDIT_DESCRIPTION1 + "\"" +
+                    "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                 "}";
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -88,9 +113,9 @@ public class TransactionControllerTest {
         String transaction =
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
-                        "\"date\":\"" + DATE1 + "\"," +
-                        "\"kind\":\"" + KIND_BAD + "\"," +
-                        "\"amount\":" + AMOUNT_100 +
+                        "\"date\":\"" + DATE1_STR + "\"," +
+                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                        "\"amount\":" + AMOUNT_100_STR +
                 "}";
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +123,6 @@ public class TransactionControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("description must not be null"));
-        //TODO: Handle HttpMessageNotReadableException in RestResponseEntityExceptionHandler
     }
 
     @Test
@@ -107,8 +131,8 @@ public class TransactionControllerTest {
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
                         "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
-                        "\"amount\":" + AMOUNT_100 + "," +
-                        "\"description\":\"" + CREDIT_DESCRIPTION1 + "\"" +
+                        "\"amount\":" + AMOUNT_100_STR + "," +
+                        "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                  "}";
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -123,10 +147,10 @@ public class TransactionControllerTest {
         String transaction =
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
-                        "\"date\":\"" + DATE1 + "\"," +
+                        "\"date\":\"" + DATE1_STR + "\"," +
                         "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
-                        "\"amount\":" + AMOUNT_100 + "," +
-                        "\"description\":\"" + CREDIT_DESCRIPTION1 + "\"" +
+                        "\"amount\":" + AMOUNT_100_STR + "," +
+                        "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
 
         given(this.transactionService.createTransaction(isA(TransactionCreateDto.class)))
@@ -147,7 +171,7 @@ public class TransactionControllerTest {
                         "\"date\":\"" + "12345" + "\"," +
                         "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
                         "\"amount\":" + AMOUNT_0 + "," +
-                        "\"description\":\"" + CREDIT_DESCRIPTION1 + "\"" +
+                        "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                 "}";
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -163,10 +187,10 @@ public class TransactionControllerTest {
         String transaction =
                 "{" +
 //                        "\"kidId\":\"" + KID_ID1 + "\"," +
-                        "\"date\":\"" + DATE1 + "\"," +
+                        "\"date\":\"" + DATE1_STR + "\"," +
                         "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
-                        "\"amount\":" + AMOUNT_100 + "," +
-                        "\"description\":\"" + CREDIT_DESCRIPTION1 + "\"" +
+                        "\"amount\":" + AMOUNT_100_STR + "," +
+                        "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -182,10 +206,10 @@ public class TransactionControllerTest {
         String transaction =
                 "{" +
                         "\"kidId\":\"" + "" + "\"," +
-                        "\"date\":\"" + DATE1 + "\"," +
+                        "\"date\":\"" + DATE1_STR + "\"," +
                         "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
-                        "\"amount\":" + AMOUNT_100 + "," +
-                        "\"description\":\"" + CREDIT_DESCRIPTION1 + "\"" +
+                        "\"amount\":" + AMOUNT_100_STR + "," +
+                        "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -200,10 +224,10 @@ public class TransactionControllerTest {
         String transaction =
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
-                        "\"date\":\"" + DATE1 + "\"," +
+                        "\"date\":\"" + DATE1_STR + "\"," +
                         "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
-                        "\"amount\":" + AMOUNT_100 + "," +
-                        "\"description\":\"" + CREDIT_DESCRIPTION1 + "\"" +
+                        "\"amount\":" + AMOUNT_100_STR + "," +
+                        "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -219,10 +243,10 @@ public class TransactionControllerTest {
         String transaction =
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
-                        "\"date\":\"" + DATE1 + "\"," +
+                        "\"date\":\"" + DATE1_STR + "\"," +
 //                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
-                        "\"amount\":" + AMOUNT_100 + "," +
-                        "\"description\":\"" + CREDIT_DESCRIPTION1 + "\"" +
+                        "\"amount\":" + AMOUNT_100_STR + "," +
+                        "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -233,22 +257,68 @@ public class TransactionControllerTest {
     }
 
     @Test
-    public void getTransactions() throws Exception {
-        fail();
+    public void deleteTransaction() throws Exception {
+        doNothing().when(transactionService).deleteTransaction(isA(String.class));
+        this.mvc.perform(delete("/transactions/" + TRANSACTION_ID1).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteTransactionTransactionNotFound() throws Exception {
+        doThrow(TransactionNotFoundException.class).when(transactionService).deleteTransaction(isA(String.class));
+
+        this.mvc.perform(delete("/transactions/" + TRANSACTION_ID1).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("transactionId not found"));
+    }
+
+    @Test
+    public void getTransactionsSingleKid() throws Exception {
+        List<TransactionReadDto> transactions = new ArrayList<>();
+        transactions.add(
+            TransactionReadDto.builder()
+                    .date(DATE1)
+                    .kind(TransactionKindDto.CREDIT)
+                    .amount(AMOUNT_100)
+                    .description(DESCRIPTION_CREDIT1)
+                    .kidId(KID_ID1)
+                .build());
+        transactions.add(
+            TransactionReadDto.builder()
+                    .date(DATE2)
+                    .kind(TransactionKindDto.DEBIT)
+                    .amount(AMOUNT_200)
+                    .description(DESCRIPTION_DEBIT1)
+                    .kidId(KID_ID1)
+                    .build());
+
+        // Given the Transaction service will return transactions
+        given(this.transactionService.getTransactions(KID_ID1)).willReturn(transactions);
+
+        // When GET /transactions?kidId={kidId}
+        this.mvc.perform(get("/transactions?kidId=" + KID_ID1).accept(MediaType.APPLICATION_JSON))
+        // Then Transactions for kidId are returned
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].date").value(DATE1_STR))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].kind").value(TransactionKindDto.CREDIT.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].amount").value(AMOUNT_100))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description").value(DESCRIPTION_CREDIT1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].kidId").value(KID_ID1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].date").value(DATE2_STR))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].kind").value(TransactionKindDto.DEBIT.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].amount").value(AMOUNT_200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].description").value(DESCRIPTION_DEBIT1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].kidId").value(KID_ID1));
     }
 
     @Test
     public void getTransactionsKidNotFound() throws Exception {
-        fail();
-    }
+        doThrow(KidNotFoundException.class).when(transactionService).getTransactions(isA(String.class));
 
-    @Test
-    public void deleteTransaction() throws Exception {
-        fail();
-    }
-
-    @Test
-    public void deleteTransactionKidNotFound() throws Exception {
-        fail();
+        this.mvc.perform(get("/transactions?kidId=" + KID_ID1).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kidId not found"));
     }
 }

@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 public class TransactionCreateDto {
     @NotNull(message="must not be null")
     @NotEmpty(message="must not be empty")
-    String kidId;
+    private String kidId;
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd")
     @NotNull(message="must not be null")
     private Date date;
