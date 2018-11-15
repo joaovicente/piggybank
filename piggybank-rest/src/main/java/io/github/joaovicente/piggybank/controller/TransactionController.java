@@ -2,7 +2,7 @@ package io.github.joaovicente.piggybank.controller;
 
 import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
-import io.github.joaovicente.piggybank.dto.TransactionCreateDto;
+import io.github.joaovicente.piggybank.dto.TransactionDto;
 import io.github.joaovicente.piggybank.dto.TransactionReadDto;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import io.github.joaovicente.piggybank.service.TransactionNotFoundException;
@@ -32,7 +32,7 @@ public class TransactionController {
     })
     @PostMapping(path="/transactions")
     public IdResponseDto createTransaction(
-            @Valid @RequestBody TransactionCreateDto reqBody)    {
+            @Valid @RequestBody TransactionDto reqBody)    {
        IdResponseDto dto;
         try {
             dto = transactionService.createTransaction(reqBody);
@@ -75,7 +75,7 @@ public class TransactionController {
     public List<TransactionReadDto> getTransactions(@RequestParam(name="kidId") String kidId) {
         List<TransactionReadDto> response;
         try {
-            response = transactionService.getTransactions(kidId);
+            response = transactionService.getTransactionsByKidId(kidId);
         }
         catch(KidNotFoundException e)  {
             ErrorDto errorDto = ErrorDto.builder()

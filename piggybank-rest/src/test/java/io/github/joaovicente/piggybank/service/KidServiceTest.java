@@ -1,6 +1,6 @@
 package io.github.joaovicente.piggybank.service;
 
-import io.github.joaovicente.piggybank.dto.KidCreateDto;
+import io.github.joaovicente.piggybank.dto.KidDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.dto.KidReadDto;
 import org.junit.Before;
@@ -13,7 +13,7 @@ import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.then;
 
-import io.github.joaovicente.piggybank.model.Kid;
+import io.github.joaovicente.piggybank.entity.Kid;
 
 import io.github.joaovicente.piggybank.repository.KidRepository;
 
@@ -25,15 +25,12 @@ public class KidServiceTest {
 
     @MockBean
     private KidRepository kidRepository;
-
     private KidService kidService;
-
 
     @Before
     public void before()    {
         kidService = new KidService(kidRepository);
     }
-
 
     @Test
     public void createKid() {
@@ -41,23 +38,15 @@ public class KidServiceTest {
         final Kid kid = Kid.builder()
                 .name(NAME)
                 .build();
-        final int RANDOMLY_GENERATED_UUID = 4;
 
-        KidCreateDto requestDto = KidCreateDto.builder()
-                .name(NAME)
-                .build();
-        IdResponseDto responseDto = IdResponseDto.builder()
-                .id(kid.getId())
-                .build();
-
+        // Given
         given(this.kidRepository.insert(kid)).willReturn(kid);
 
         // When
-        IdResponseDto actual = kidService.createKid(requestDto);
+        Kid kidInserted = kidService.createKid(kid);
 
         // Then
-        assertThat(actual).isInstanceOf(IdResponseDto.class);
-        assertThat(UUID.fromString(actual.getId()).version()).isEqualTo(RANDOMLY_GENERATED_UUID);
+        assertThat(kidInserted).isEqualTo(kid);
     }
 
     @Test
@@ -67,19 +56,15 @@ public class KidServiceTest {
                 .name(NAME)
                 .build();
         final String id = kid.getId();
-        final KidReadDto kidReadDto = KidReadDto.builder()
-                .id(id)
-                .name(NAME)
-                .build();
 
         given(this.kidRepository.findById(id))
                 .willReturn(java.util.Optional.of(kid));
 
         // When
-        KidReadDto actual = kidService.getKidById(id);
+        Kid actual = kidService.getKidById(id);
 
         // Then
-        assertThat(actual).isEqualTo(kidReadDto);
+        assertThat(actual).isEqualTo(kid);
     }
 
     @Test(expected = KidNotFoundException.class)

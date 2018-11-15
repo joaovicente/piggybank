@@ -8,8 +8,9 @@ import javax.validation.constraints.NotNull;
 
 @Builder
 @Data
-public class KidCreateDto {
+public class KidDto {
+    private String id;
     @NotNull(message = "must not be null")
     @NotBlank(message = "must not be empty")
-    String name;
+    private String name;
 }

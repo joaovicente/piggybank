@@ -1,4 +1,4 @@
-package io.github.joaovicente.piggybank.model;
+package io.github.joaovicente.piggybank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

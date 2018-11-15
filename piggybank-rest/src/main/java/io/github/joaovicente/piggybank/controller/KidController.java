@@ -1,13 +1,15 @@
 package io.github.joaovicente.piggybank.controller;
 
-import io.github.joaovicente.piggybank.dto.KidCreateDto;
+import io.github.joaovicente.piggybank.dto.KidDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.dto.KidReadDto;
 import io.github.joaovicente.piggybank.dto.IdResponseDto;
+import io.github.joaovicente.piggybank.entity.Kid;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import io.github.joaovicente.piggybank.service.KidService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +20,12 @@ import java.util.Collections;
 @RestController
 public class KidController {
     private final KidService kidService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    KidController(KidService kidService)   {
+    KidController(KidService kidService, ModelMapper modelMapper)   {
         this.kidService = kidService;
+        this.modelMapper = modelMapper;
     }
 
     @ApiResponses({
@@ -29,8 +33,9 @@ public class KidController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @PostMapping(value = "/kids")
-    public IdResponseDto createKid(@Valid @RequestBody KidCreateDto reqBody)    {
-        return kidService.createKid(reqBody);
+    public KidDto createKid(@Valid @RequestBody KidDto request)    {
+        Kid kid = kidService.createKid(modelMapper.map(request, Kid.class));
+        return modelMapper.map(kid, KidDto.class);
     }
 
     @ApiResponses({
@@ -38,10 +43,10 @@ public class KidController {
             @ApiResponse(code = 404, message = "Not Found")
     })
     @GetMapping(value = "/kids/{id}")
-    public KidReadDto getKid(@PathVariable(name="id") String id )    {
-        KidReadDto dto;
+    public KidDto getKid(@PathVariable(name="id") String id )    {
+        Kid kid;
         try {
-            dto = kidService.getKidById(id);
+            kid = kidService.getKidById(id);
         }
         catch(KidNotFoundException e)  {
 
@@ -51,7 +56,7 @@ public class KidController {
                     .build();
             throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
         }
-        return dto;
+        return modelMapper.map(kid, KidDto.class);
     }
 
 

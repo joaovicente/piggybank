@@ -2,10 +2,10 @@ package io.github.joaovicente.piggybank.controller;
 
 
 import io.github.joaovicente.piggybank.dto.*;
-import io.github.joaovicente.piggybank.model.Transaction;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import io.github.joaovicente.piggybank.service.TransactionNotFoundException;
 import io.github.joaovicente.piggybank.service.TransactionService;
+import io.github.joaovicente.piggybank.type.TransactionKind;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class TransactionControllerTest {
                 "{" +
                     "\"kidId\":\"" + KID_ID1 + "\"," +
                     "\"date\":\"" + DATE1_STR + "\"," +
-                    "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                    "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                     "\"amount\":" + AMOUNT_100_STR + "," +
                     "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                 "}";
@@ -81,7 +81,7 @@ public class TransactionControllerTest {
                 .id(TRANSACTION_ID1)
                 .build();
 
-        given(this.transactionService.createTransaction(isA(TransactionCreateDto.class)))
+        given(this.transactionService.createTransaction(isA(TransactionDto.class)))
                 .willReturn(rspDto);
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -96,7 +96,7 @@ public class TransactionControllerTest {
                 "{" +
                     "\"kidId\":\"" + KID_ID1 + "\"," +
                     "\"date\":\"" + DATE1_STR + "\"," +
-                    "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                    "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                     "\"amount\":" + AMOUNT_0 + "," +
                     "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                 "}";
@@ -114,7 +114,7 @@ public class TransactionControllerTest {
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
                         "\"date\":\"" + DATE1_STR + "\"," +
-                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                        "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                         "\"amount\":" + AMOUNT_100_STR +
                 "}";
 
@@ -130,7 +130,7 @@ public class TransactionControllerTest {
         String transaction =
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
-                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                        "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                         "\"amount\":" + AMOUNT_100_STR + "," +
                         "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                  "}";
@@ -148,12 +148,12 @@ public class TransactionControllerTest {
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
                         "\"date\":\"" + DATE1_STR + "\"," +
-                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                        "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                         "\"amount\":" + AMOUNT_100_STR + "," +
                         "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
 
-        given(this.transactionService.createTransaction(isA(TransactionCreateDto.class)))
+        given(this.transactionService.createTransaction(isA(TransactionDto.class)))
                 .willThrow(new KidNotFoundException());
 
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
@@ -169,7 +169,7 @@ public class TransactionControllerTest {
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
                         "\"date\":\"" + "12345" + "\"," +
-                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                        "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                         "\"amount\":" + AMOUNT_0 + "," +
                         "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                 "}";
@@ -188,7 +188,7 @@ public class TransactionControllerTest {
                 "{" +
 //                        "\"kidId\":\"" + KID_ID1 + "\"," +
                         "\"date\":\"" + DATE1_STR + "\"," +
-                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                        "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                         "\"amount\":" + AMOUNT_100_STR + "," +
                         "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
@@ -207,7 +207,7 @@ public class TransactionControllerTest {
                 "{" +
                         "\"kidId\":\"" + "" + "\"," +
                         "\"date\":\"" + DATE1_STR + "\"," +
-                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                        "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                         "\"amount\":" + AMOUNT_100_STR + "," +
                         "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
@@ -225,7 +225,7 @@ public class TransactionControllerTest {
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
                         "\"date\":\"" + DATE1_STR + "\"," +
-                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+                        "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                         "\"amount\":" + AMOUNT_100_STR + "," +
                         "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
@@ -235,7 +235,7 @@ public class TransactionControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kind is invalid"));
-        //TODO: Handle validation of Enum (see TransactionCreateDto @Enum)
+        //TODO: Handle validation of Enum (see TransactionDto @Enum)
     }
 
     @Test
@@ -244,7 +244,7 @@ public class TransactionControllerTest {
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
                         "\"date\":\"" + DATE1_STR + "\"," +
-//                        "\"kind\":\"" + TransactionKindDto.CREDIT.toString() + "\"," +
+//                        "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
                         "\"amount\":" + AMOUNT_100_STR + "," +
                         "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
@@ -279,7 +279,7 @@ public class TransactionControllerTest {
         transactions.add(
             TransactionReadDto.builder()
                     .date(DATE1)
-                    .kind(TransactionKindDto.CREDIT)
+                    .kind(TransactionKind.CREDIT)
                     .amount(AMOUNT_100)
                     .description(DESCRIPTION_CREDIT1)
                     .kidId(KID_ID1)
@@ -287,26 +287,26 @@ public class TransactionControllerTest {
         transactions.add(
             TransactionReadDto.builder()
                     .date(DATE2)
-                    .kind(TransactionKindDto.DEBIT)
+                    .kind(TransactionKind.DEBIT)
                     .amount(AMOUNT_200)
                     .description(DESCRIPTION_DEBIT1)
                     .kidId(KID_ID1)
                     .build());
 
         // Given the Transaction service will return transactions
-        given(this.transactionService.getTransactions(KID_ID1)).willReturn(transactions);
+        given(this.transactionService.getTransactionsByKidId(KID_ID1)).willReturn(transactions);
 
         // When GET /transactions?kidId={kidId}
         this.mvc.perform(get("/transactions?kidId=" + KID_ID1).accept(MediaType.APPLICATION_JSON))
         // Then Transactions for kidId are returned
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].date").value(DATE1_STR))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].kind").value(TransactionKindDto.CREDIT.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].kind").value(TransactionKind.CREDIT.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].amount").value(AMOUNT_100))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description").value(DESCRIPTION_CREDIT1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].kidId").value(KID_ID1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[1].date").value(DATE2_STR))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].kind").value(TransactionKindDto.DEBIT.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].kind").value(TransactionKind.DEBIT.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[1].amount").value(AMOUNT_200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[1].description").value(DESCRIPTION_DEBIT1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[1].kidId").value(KID_ID1));
@@ -314,7 +314,7 @@ public class TransactionControllerTest {
 
     @Test
     public void getTransactionsKidNotFound() throws Exception {
-        doThrow(KidNotFoundException.class).when(transactionService).getTransactions(isA(String.class));
+        doThrow(KidNotFoundException.class).when(transactionService).getTransactionsByKidId(isA(String.class));
 
         this.mvc.perform(get("/transactions?kidId=" + KID_ID1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
