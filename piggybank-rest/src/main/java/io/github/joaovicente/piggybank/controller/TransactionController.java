@@ -1,14 +1,14 @@
 package io.github.joaovicente.piggybank.controller;
 
 import io.github.joaovicente.piggybank.dto.ErrorDto;
-import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.dto.TransactionDto;
-import io.github.joaovicente.piggybank.dto.TransactionReadDto;
+import io.github.joaovicente.piggybank.entity.Transaction;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import io.github.joaovicente.piggybank.service.TransactionNotFoundException;
 import io.github.joaovicente.piggybank.service.TransactionService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class TransactionController {
     private TransactionService transactionService;
+    private ModelMapper modelMapper;
 
     @Autowired
-    TransactionController(TransactionService transactionService)   {
+    TransactionController(TransactionService transactionService, ModelMapper modelMapper)   {
         this.transactionService = transactionService;
+        this.modelMapper = modelMapper;
     }
 
     @ApiResponses({
@@ -31,21 +34,20 @@ public class TransactionController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @PostMapping(path="/transactions")
-    public IdResponseDto createTransaction(
-            @Valid @RequestBody TransactionDto reqBody)    {
-       IdResponseDto dto;
+    public TransactionDto createTransaction(@Valid @RequestBody TransactionDto request)    {
+        Transaction createdTransaction;
+
         try {
-            dto = transactionService.createTransaction(reqBody);
+            createdTransaction = transactionService.createTransaction(modelMapper.map(request, Transaction.class));
         }
         catch(KidNotFoundException e)  {
-
             ErrorDto errorDto = ErrorDto.builder()
                     .error("NOT_FOUND")
                     .message(Collections.singletonList("kidId not found"))
                     .build();
             throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
         }
-        return dto;
+        return modelMapper.map(createdTransaction, TransactionDto.class);
     }
 
     @ApiResponses({
@@ -72,10 +74,10 @@ public class TransactionController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     @GetMapping(path="/transactions")
-    public List<TransactionReadDto> getTransactions(@RequestParam(name="kidId") String kidId) {
-        List<TransactionReadDto> response;
+    public List<TransactionDto> getTransactions(@RequestParam(name="kidId") String kidId) {
+        List<Transaction> transactionList;
         try {
-            response = transactionService.getTransactionsByKidId(kidId);
+            transactionList = transactionService.getTransactionsByKidId(kidId);
         }
         catch(KidNotFoundException e)  {
             ErrorDto errorDto = ErrorDto.builder()
@@ -84,6 +86,8 @@ public class TransactionController {
                     .build();
             throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
         }
-        return response;
+        return transactionList.stream()
+                .map(transaction -> modelMapper.map(transaction, TransactionDto.class))
+                .collect(Collectors.toList());
     }
 }

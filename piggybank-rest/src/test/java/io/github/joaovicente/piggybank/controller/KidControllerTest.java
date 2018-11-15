@@ -31,10 +31,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import io.github.joaovicente.piggybank.service.KidService;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(SpringRunner.class)
+//@ContextConfiguration(classes=MapperConfig.class, loader=AnnotationConfigContextLoader.class)
 @WebMvcTest(KidController.class)
 public class KidControllerTest {
-
     @TestConfiguration
     static class ModelMapperConfiguration {
         @Bean
@@ -68,7 +71,7 @@ public class KidControllerTest {
         this.mvc.perform(post("/kids").contentType(MediaType.APPLICATION_JSON)
                 .content(kidAsJson).characterEncoding("utf-8"))
                 .andExpect(status().isOk())
-                //TODO: check ID is UUID
+                //TODO: check ID is a UUID
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME));
     }
 
@@ -123,6 +126,24 @@ public class KidControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(kid.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME));
+    }
+
+    @Test
+    public void getKids() throws Exception {
+        List<Kid> kidsList = new ArrayList<>();
+        final String KID1 = "Albert";
+        final String KID2 = "Beth";
+        kidsList.add(new Kid(KID1));
+        kidsList.add(new Kid(KID2));
+
+        given(this.kidService.getKids()).willReturn(kidsList);
+
+        this.mvc.perform(get("/kids").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(kidsList.get(0).getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(kidsList.get(0).getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(kidsList.get(1).getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value(kidsList.get(1).getName()));
     }
 
     @Test

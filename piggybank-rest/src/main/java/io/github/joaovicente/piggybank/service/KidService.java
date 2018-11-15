@@ -1,13 +1,11 @@
 package io.github.joaovicente.piggybank.service;
 
 import io.github.joaovicente.piggybank.repository.KidRepository;
-import io.github.joaovicente.piggybank.dto.KidDto;
-import io.github.joaovicente.piggybank.dto.KidReadDto;
-import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.entity.Kid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +21,10 @@ public class KidService {
         return kidRepository.insert(kid);
     }
 
+    public boolean kidExists(String kidId)  {
+        return kidRepository.existsById(kidId);
+    }
+
     public Kid getKidById(String id)  {
         Optional<Kid> optionalKid = kidRepository.findById(id);
         Kid kid;
@@ -33,6 +35,10 @@ public class KidService {
             throw new KidNotFoundException();
         }
         return kid;
+    }
+
+    public List<Kid> getKids()  {
+        return kidRepository.findAll();
     }
 
     public void deleteKidById(String id)  {

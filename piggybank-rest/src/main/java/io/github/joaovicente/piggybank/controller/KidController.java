@@ -2,8 +2,6 @@ package io.github.joaovicente.piggybank.controller;
 
 import io.github.joaovicente.piggybank.dto.KidDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
-import io.github.joaovicente.piggybank.dto.KidReadDto;
-import io.github.joaovicente.piggybank.dto.IdResponseDto;
 import io.github.joaovicente.piggybank.entity.Kid;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import io.github.joaovicente.piggybank.service.KidService;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class KidController {
@@ -59,6 +59,16 @@ public class KidController {
         return modelMapper.map(kid, KidDto.class);
     }
 
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+    })
+    @GetMapping(value = "/kids")
+    public List<KidDto> getKid()    {
+        List<Kid> kidList = kidService.getKids();
+        return kidList.stream()
+                .map(kid -> modelMapper.map(kid, KidDto.class))
+                .collect(Collectors.toList());
+    }
 
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),

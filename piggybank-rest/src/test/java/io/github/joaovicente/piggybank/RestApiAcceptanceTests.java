@@ -37,10 +37,10 @@ public class RestApiAcceptanceTests {
 
     @Before
     public void setup() {
-        api = new RestApiUtil(port, restTemplate);
-        api.reset();
-        RestAssured.baseURI = "http://localhost";
-        RestAssured.port = this.port;
+//        api = new RestApiUtil(port, restTemplate);
+//        api.reset();
+//        RestAssured.baseURI = "http://localhost";
+//        RestAssured.port = this.port;
     }
 
     @Test

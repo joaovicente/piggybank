@@ -1,8 +1,5 @@
 package io.github.joaovicente.piggybank.service;
 
-import io.github.joaovicente.piggybank.dto.KidDto;
-import io.github.joaovicente.piggybank.dto.IdResponseDto;
-import io.github.joaovicente.piggybank.dto.KidReadDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +14,9 @@ import io.github.joaovicente.piggybank.entity.Kid;
 
 import io.github.joaovicente.piggybank.repository.KidRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 public class KidServiceTest {
@@ -48,6 +46,27 @@ public class KidServiceTest {
         // Then
         assertThat(kidInserted).isEqualTo(kid);
     }
+
+
+    @Test
+    public void getKids() {
+        List<Kid> kidsList = new ArrayList<>();
+        final String KID1 = "Albert";
+        final String KID2 = "Beth";
+        kidsList.add(new Kid(KID1));
+        kidsList.add(new Kid(KID2));
+
+        given(this.kidRepository.findAll())
+                .willReturn(kidsList);
+
+        // When
+        List<Kid> actual = kidService.getKids();
+
+        // Then
+        assertThat(actual.get(0).getName()).isEqualTo(KID1);
+        assertThat(actual.get(1).getName()).isEqualTo(KID2);
+    }
+
 
     @Test
     public void getKid() {
