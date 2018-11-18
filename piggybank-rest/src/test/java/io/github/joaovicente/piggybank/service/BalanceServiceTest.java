@@ -15,7 +15,6 @@ import static io.github.joaovicente.piggybank.type.TransactionKind.DEBIT;
 import static org.mockito.BDDMockito.given;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.then;
 
 @RunWith(SpringRunner.class)
 public class BalanceServiceTest {

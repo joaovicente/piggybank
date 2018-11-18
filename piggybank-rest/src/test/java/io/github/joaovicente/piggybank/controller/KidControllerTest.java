@@ -55,7 +55,6 @@ public class KidControllerTest {
 
     @Test
     public void createKid() throws Exception {
-        final String ID = "1";
         final String NAME = "Albert";
         final KidDto kidDto = KidDto.builder()
                 .name(NAME)

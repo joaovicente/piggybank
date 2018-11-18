@@ -1,6 +1,5 @@
 package io.github.joaovicente.piggybank;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import lombok.extern.java.Log;

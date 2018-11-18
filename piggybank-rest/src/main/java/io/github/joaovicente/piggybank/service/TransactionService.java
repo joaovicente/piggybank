@@ -21,8 +21,7 @@ public class TransactionService {
     }
 
     public Transaction createTransaction(Transaction transaction) {
-        Transaction insertedTransaction = transactionRepository.insert(transaction);
-        return insertedTransaction;
+        return transactionRepository.insert(transaction);
     }
 
     public List<Transaction> getTransactionsByKidId(String kidId)  {

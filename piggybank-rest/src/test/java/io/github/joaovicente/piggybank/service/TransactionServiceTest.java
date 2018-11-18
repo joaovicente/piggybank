@@ -1,7 +1,5 @@
 package io.github.joaovicente.piggybank.service;
 
-import io.github.joaovicente.piggybank.dto.IdResponseDto;
-import io.github.joaovicente.piggybank.dto.TransactionDto;
 import io.github.joaovicente.piggybank.entity.Transaction;
 import io.github.joaovicente.piggybank.repository.TransactionRepository;
 import io.github.joaovicente.piggybank.type.TransactionKind;
@@ -13,13 +11,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.time.DateUtils.parseDateStrictly;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.BDDMockito.willThrow;
 
 @RunWith(SpringRunner.class)
 public class TransactionServiceTest {

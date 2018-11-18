@@ -14,7 +14,6 @@ import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.controller.RestResponseException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.status;
