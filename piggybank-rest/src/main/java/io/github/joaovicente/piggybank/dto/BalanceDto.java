@@ -1,11 +1,11 @@
 package io.github.joaovicente.piggybank.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Builder
+@AllArgsConstructor
 @Data
 
-public class BalanceResponseDto {
+public class BalanceDto {
     private int balance;
 }

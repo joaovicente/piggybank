@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-//@ContextConfiguration(classes=MapperConfig.class, loader=AnnotationConfigContextLoader.class)
 @WebMvcTest(KidController.class)
 public class KidControllerTest {
     @TestConfiguration
@@ -177,7 +176,7 @@ public class KidControllerTest {
         this.mvc.perform(delete("/kids/" + ID).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("Supplied kid id was not found"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kidId not found"));
     }
 
 }
