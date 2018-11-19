@@ -5,7 +5,7 @@ note right of Teller : i.e. Mum and Dad
 
 Teller --> (Record Credit)
 Teller --> (Record Debit)
-Teller --> (Check balance)
+Teller --> (Check kidBalance)
 Teller --> (Get statement)
 
 @enduml

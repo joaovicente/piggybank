@@ -1,8 +1,10 @@
 package io.github.joaovicente.piggybank.config;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,6 +16,7 @@ import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.controller.RestResponseException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.status;
@@ -25,6 +28,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<ErrorDto> handleInputValidationException(RestResponseException ex) {
         return status(ex.getStatus()).body(ex.getErrorDto());
     }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -43,6 +47,19 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         ErrorDto errorDto = ErrorDto.builder()
                 .error("BAD_REQUEST")
                 .message(errors)
+                .build();
+
+        return handleExceptionInternal(
+                ex, errorDto, headers, HttpStatus.BAD_REQUEST, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        InvalidFormatException invalidFormatException = (InvalidFormatException) ex.getCause();
+        final String field = invalidFormatException.getPath().get(0).getFieldName();
+        ErrorDto errorDto = ErrorDto.builder()
+                .error("BAD_REQUEST")
+                .message(Collections.singletonList(field + " is invalid"))
                 .build();
 
         return handleExceptionInternal(

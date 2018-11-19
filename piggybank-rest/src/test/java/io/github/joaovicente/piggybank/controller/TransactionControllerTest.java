@@ -21,7 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.apache.commons.lang3.time.DateUtils.parseDateStrictly;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -196,7 +198,6 @@ public class TransactionControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("date is invalid"));
-        // FIXME: Handle incorrect date
     }
 
     @Test
@@ -242,7 +243,7 @@ public class TransactionControllerTest {
                 "{" +
                         "\"kidId\":\"" + KID_ID1 + "\"," +
                         "\"date\":\"" + DATE1_STR + "\"," +
-                        "\"kind\":\"" + TransactionKind.CREDIT.toString() + "\"," +
+                        "\"kind\":\"" + KIND_BAD + "\"," +
                         "\"amount\":" + AMOUNT_100_STR + "," +
                         "\"description\":\"" + DESCRIPTION_CREDIT1 + "\"" +
                         "}";
@@ -252,7 +253,6 @@ public class TransactionControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kind is invalid"));
-        //TODO: Handle validation of Enum (see TransactionDto @Enum)
     }
 
     @Test
@@ -290,44 +290,44 @@ public class TransactionControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("transactionId not found"));
     }
 
-//    @Test
-//    public void getTransactionsSingleKid() throws Exception {
-//        List<TransactionReadDto> transactions = new ArrayList<>();
-//        transactions.add(
-//            TransactionReadDto.builder()
-//                    .date(DATE1)
-//                    .kind(TransactionKind.CREDIT)
-//                    .amount(AMOUNT_100)
-//                    .description(DESCRIPTION_CREDIT1)
-//                    .kidId(KID_ID1)
-//                .build());
-//        transactions.add(
-//            TransactionReadDto.builder()
-//                    .date(DATE2)
-//                    .kind(TransactionKind.DEBIT)
-//                    .amount(AMOUNT_200)
-//                    .description(DESCRIPTION_DEBIT1)
-//                    .kidId(KID_ID1)
-//                    .build());
-//
-//        // Given the Transaction service will return transactions
-//        given(this.transactionService.getTransactionsByKidId(KID_ID1)).willReturn(transactions);
-//
-//        // When GET /transactions?kidId={kidId}
-//        this.mvc.perform(get("/transactions?kidId=" + KID_ID1).accept(MediaType.APPLICATION_JSON))
-//        // Then Transactions for kidId are returned
-//                .andExpect(status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].date").value(DATE1_STR))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].kind").value(TransactionKind.CREDIT.toString()))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].amount").value(AMOUNT_100))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description").value(DESCRIPTION_CREDIT1))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].kidId").value(KID_ID1))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].date").value(DATE2_STR))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].kind").value(TransactionKind.DEBIT.toString()))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].amount").value(AMOUNT_200))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].description").value(DESCRIPTION_DEBIT1))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].kidId").value(KID_ID1));
-//    }
+    @Test
+    public void getTransactionsSingleKid() throws Exception {
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.add(
+            Transaction.builder()
+                    .date(DATE1)
+                    .kind(TransactionKind.CREDIT)
+                    .amount(AMOUNT_100)
+                    .description(DESCRIPTION_CREDIT1)
+                    .kidId(KID_ID1)
+                .build());
+        transactions.add(
+            Transaction.builder()
+                    .date(DATE2)
+                    .kind(TransactionKind.DEBIT)
+                    .amount(AMOUNT_200)
+                    .description(DESCRIPTION_DEBIT1)
+                    .kidId(KID_ID1)
+                    .build());
+
+        // Given the Transaction service will return transactions
+        given(this.transactionService.getTransactionsByKidId(KID_ID1)).willReturn(transactions);
+
+        // When GET /transactions?kidId={kidId}
+        this.mvc.perform(get("/transactions?kidId=" + KID_ID1).accept(MediaType.APPLICATION_JSON))
+        // Then Transactions for kidId are returned
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].date").value(DATE1_STR))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].kind").value(TransactionKind.CREDIT.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].amount").value(AMOUNT_100))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].description").value(DESCRIPTION_CREDIT1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].kidId").value(KID_ID1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].date").value(DATE2_STR))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].kind").value(TransactionKind.DEBIT.toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].amount").value(AMOUNT_200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].description").value(DESCRIPTION_DEBIT1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[1].kidId").value(KID_ID1));
+    }
 
     @Test
     public void getTransactionsKidNotFound() throws Exception {

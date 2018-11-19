@@ -125,18 +125,18 @@ public class RestApiAcceptanceTests {
                         .response();
         log.info("GET /statements OUT: " + responseBody.asString());
 
-        // GET /balance
+        // GET /kidBalance
         responseBody =
                 given()
                         .contentType(ContentType.JSON)
                 .when()
-                        .get("/balance")
+                        .get("/kidBalance")
                 .then()
                         .statusCode(HttpStatus.SC_OK)
-                        .body("balance", is(BALANCE))
+                        .body("kidBalance", is(BALANCE))
                         .extract()
                         .response();
-        log.info("GET /balance OUT: " + responseBody.asString());
+        log.info("GET /kidBalance OUT: " + responseBody.asString());
         //TODO: Test the latest transaction is the top of the list (incorrect behavior currently)
     }
 
