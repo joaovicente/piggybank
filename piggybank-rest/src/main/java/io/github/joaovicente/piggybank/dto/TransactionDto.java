@@ -2,7 +2,6 @@ package io.github.joaovicente.piggybank.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.github.joaovicente.piggybank.type.TransactionKind;
-import io.github.joaovicente.piggybank.validator.Enum;
 import lombok.Builder;
 import lombok.Data;
 

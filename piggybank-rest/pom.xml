@@ -85,11 +85,11 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.0.13.Final</version>
 		</dependency>
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>javax.el</artifactId>
-			<version>3.0.0</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.glassfish.web</groupId>-->
+			<!--<artifactId>javax.el</artifactId>-->
+			<!--<version>3.0.0</version>-->
+		<!--</dependency>-->
 		<!--DTO <-> Model  mapping-->
 		<dependency>
 			<groupId>org.modelmapper</groupId>
