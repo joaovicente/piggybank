@@ -2,8 +2,6 @@
 
 ```mvn heroku:deploy```
 
-
-
 ## Run the app locally
 
 *run Mongodb docker in a new terminal*
@@ -18,49 +16,49 @@ $ sudo docker-compose -f ./docker-compose-mongodb.yml
 ```
 $ mvn spring-boot:run
 ```
+# REST API 
 
-## Make the first deposit
+## Create Kid
 
 ```
-$ http POST localhost:8080/deposit description="first deposit" amount=10
-
-HTTP/1.1 200 
-Content-Type: application/json;charset=UTF-8
-Date: Wed, 05 Sep 2018 06:11:04 GMT
-Transfer-Encoding: chunked
-
+$http POST http://localhost:8080/kids name=Albert
 {
-    "amount": 10.0,
-    "description": "first deposit"
+    "id": "ccf15063-a2b6-465a-b7b4-707a03791da9",
+    "name": "Albert"
 }
 ```
 
-
-## Persist deposit using MongoDB
-
-
-### Setup MongoDB docker
-
+## Create Transaction
 ```
-vim docker-compose-mongodb.yml
-```
-
-```
----
-version: '2'
-services:
-  mongodb:
-    container_name: mongodb
-    image: mongo:3.0.4
-    ports:
-      - "27017:27017"
-    command: mongod --smallfiles
+$ http POST http://localhost:8080/transactions kidId=ccf15063-a2b6-465a-b7b4-707a03791da9 kind=CREDIT amount=10000 date=2018-11-22 description="first transaction" 
+{
+    "amount": 10000,
+    "date": "2018-11-22",
+    "description": "first transaction",
+    "id": "10058309-961a-4998-b4ef-a0674784e477",
+    "kidId": "ccf15063-a2b6-465a-b7b4-707a03791da9",
+    "kind": "CREDIT"
+}
 ```
 
-
-## Create a repository to store Transactions (Deposits and Withdrawalss)
+## Get kid balance
 
 ```
-$ vim ./src/main/java/io/github/joaovicente/piggybank/Transaction.java
+$ http http://localhost:8080/balance kidId==ccf15063-a2b6-465a-b7b4-707a03791da9
+{
+    "balance": 10000
+}
 ```
 
+## Get kids-and-balances
+
+```
+$ http https://localhost:8080/kids-and-balances
+[
+    {
+        "kidBalance": 10000,
+        "kidId": "ccf15063-a2b6-465a-b7b4-707a03791da9",
+        "kidName": "Albert"
+    }
+]
+```

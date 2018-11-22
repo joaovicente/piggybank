@@ -110,7 +110,7 @@
 				<artifactId>heroku-maven-plugin</artifactId>
 				<version>2.0.6</version>
 				<configuration>
-					<appName>piggyback-rest</appName>
+					<appName>${project.artifactId}</appName>
 					<jdkVersion>${java.version}</jdkVersion>
 					<includeTarget>false</includeTarget>
 					<includes>
