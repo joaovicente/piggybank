@@ -21,7 +21,7 @@ $ mvn spring-boot:run
 ## Create Kid
 
 ```
-$http POST http://localhost:8080/kids name=Albert
+$ http POST http://localhost:8080/kids name=Albert
 {
     "id": "ccf15063-a2b6-465a-b7b4-707a03791da9",
     "name": "Albert"
@@ -49,6 +49,22 @@ $ http http://localhost:8080/balance kidId==ccf15063-a2b6-465a-b7b4-707a03791da9
     "balance": 10000
 }
 ```
+
+## Get Kid transactions
+```
+$ http GET http://localhost:8080/transactions kidId==ccf15063-a2b6-465a-b7b4-707a03791da9
+[
+    {
+        "amount": 10000,
+        "date": "2018-11-22",
+        "description": "first transaction",
+        "id": "10058309-961a-4998-b4ef-a0674784e477",
+        "kidId": "ccf15063-a2b6-465a-b7b4-707a03791da9",
+        "kind": "CREDIT"
+    }
+]
+```
+
 
 ## Get kids-and-balances
 
