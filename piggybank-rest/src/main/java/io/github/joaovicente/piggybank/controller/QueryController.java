@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 public class QueryController {
-    QueryService queryService;
+    private final QueryService queryService;
 
     @Autowired
     public QueryController(QueryService queryService) {
@@ -21,7 +21,6 @@ public class QueryController {
 
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "Not Found")
     })
     @GetMapping(path = "/kids-and-balances")
     public List<KidAndBalancesDto> getKidsAndBalance()  {

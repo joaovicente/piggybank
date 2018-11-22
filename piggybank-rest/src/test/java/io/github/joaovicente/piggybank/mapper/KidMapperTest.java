@@ -10,8 +10,8 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class KidMapperTest {
-    private ModelMapper modelMapper = new ModelMapper();
-    String NAME = "Albert";
+    private final ModelMapper modelMapper = new ModelMapper();
+    final String NAME = "Albert";
     String ID = "51459636-51f8-4f90-ac17-2439b5a4de59";
     final int RANDOMLY_GENERATED_UUID = 4;
 

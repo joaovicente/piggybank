@@ -17,16 +17,16 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
 public class TransactionDto {
     String id;
-    @NotNull(message="must not be null")
-    @NotEmpty(message="must not be empty")
+    @NotNull
+    @NotEmpty
     private String kidId;
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd")
-    @NotNull(message="must not be null")
+    @NotNull
     private Date date;
-    @NotNull(message="must not be null")
+    @NotNull
     private TransactionKind kind;
-    @NotNull(message="must not be null")
+    @NotNull
     private String description;
-    @Min(value=1, message="must be above 0")
+    @Min(value=1)
     private int amount;
 }

@@ -62,6 +62,8 @@ public class TransactionControllerTest {
     private final String KIND_BAD = "BAD_KIND";
     private final String DESCRIPTION_CREDIT1 = "Gift from grandparents";
     private final String DESCRIPTION_DEBIT1 = "Shopping day";
+    private final String RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND";
+    private final String INVALID_INPUT = "INVALID_INPUT";
 
     @TestConfiguration
     static class ModelMapperConfiguration {
@@ -123,8 +125,9 @@ public class TransactionControllerTest {
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
                 .content(requestAsJson).characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("amount must be above 0"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]")
+                        .value("amount must be greater than or equal to 1"));
     }
 
     @Test
@@ -140,7 +143,7 @@ public class TransactionControllerTest {
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
                 .content(transaction).characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("description must not be null"));
     }
 
@@ -157,7 +160,7 @@ public class TransactionControllerTest {
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
                 .content(transaction).characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("date must not be null"));
     }
 
@@ -178,7 +181,7 @@ public class TransactionControllerTest {
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
                 .content(transaction).characterEncoding("utf-8"))
                 .andExpect(status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(RESOURCE_NOT_FOUND))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kidId not found"));
     }
 
@@ -196,7 +199,7 @@ public class TransactionControllerTest {
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
                 .content(transaction).characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("date is invalid"));
     }
 
@@ -214,7 +217,7 @@ public class TransactionControllerTest {
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
                 .content(transaction).characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[*]")
                     .value(containsInAnyOrder("kidId must not be empty","kidId must not be null")));
     }
@@ -233,7 +236,7 @@ public class TransactionControllerTest {
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
                 .content(transaction).characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kidId must not be empty"));
     }
 
@@ -251,7 +254,7 @@ public class TransactionControllerTest {
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
                 .content(transaction).characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kind is invalid"));
     }
 
@@ -269,7 +272,7 @@ public class TransactionControllerTest {
         this.mvc.perform(post("/transactions").contentType(MediaType.APPLICATION_JSON)
                 .content(transaction).characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kind must not be null"));
     }
 
@@ -286,7 +289,7 @@ public class TransactionControllerTest {
 
         this.mvc.perform(delete("/transactions/" + TRANSACTION_ID1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(RESOURCE_NOT_FOUND))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("transactionId not found"));
     }
 
@@ -335,7 +338,7 @@ public class TransactionControllerTest {
 
         this.mvc.perform(get("/transactions?kidId=" + KID_ID1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(RESOURCE_NOT_FOUND))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kidId not found"));
     }
 }

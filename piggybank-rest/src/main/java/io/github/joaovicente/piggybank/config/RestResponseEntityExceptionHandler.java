@@ -1,6 +1,8 @@
 package io.github.joaovicente.piggybank.config;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import io.github.joaovicente.piggybank.dto.ErrorUtil.ErrorCode;
+import io.github.joaovicente.piggybank.dto.ErrorUtil.ErrorMessage;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ import java.util.List;
 import static org.springframework.http.ResponseEntity.status;
 
 @ControllerAdvice
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RestResponseException.class )
     public ResponseEntity<ErrorDto> handleInputValidationException(RestResponseException ex) {
@@ -45,7 +47,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         }
 
         ErrorDto errorDto = ErrorDto.builder()
-                .error("BAD_REQUEST")
+
+                .error(ErrorCode.INVALID_INPUT.value())
                 .message(errors)
                 .build();
 
@@ -58,8 +61,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         InvalidFormatException invalidFormatException = (InvalidFormatException) ex.getCause();
         final String field = invalidFormatException.getPath().get(0).getFieldName();
         ErrorDto errorDto = ErrorDto.builder()
-                .error("BAD_REQUEST")
-                .message(Collections.singletonList(field + " is invalid"))
+                .error(ErrorCode.INVALID_INPUT.value())
+                .message(Collections.singletonList(ErrorMessage.IS_INVALID.prefix(field)))
                 .build();
 
         return handleExceptionInternal(

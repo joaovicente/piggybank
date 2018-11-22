@@ -25,6 +25,8 @@ public class BalanceControllerTest {
     @MockBean
     BalanceService balanceService;
 
+    final String RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND";
+
     @Test
     public void getBalance() throws Exception {
         final String KID1 = "k1";
@@ -49,7 +51,7 @@ public class BalanceControllerTest {
         // When
         this.mvc.perform(get("/balance?kidId=" + KID1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(RESOURCE_NOT_FOUND))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kidId not found"));
     }
 }

@@ -10,8 +10,8 @@ import java.util.Optional;
 
 @Service
 public class TransactionService {
-    private TransactionRepository transactionRepository;
-    private KidService kidService;
+    private final TransactionRepository transactionRepository;
+    private final KidService kidService;
 
     @Autowired
     public TransactionService(
@@ -21,7 +21,7 @@ public class TransactionService {
     }
 
     public Transaction createTransaction(Transaction transaction) {
-        return transactionRepository.insert(transaction);
+        return transactionRepository.save(transaction);
     }
 
     public List<Transaction> getTransactionsByKidId(String kidId)  {

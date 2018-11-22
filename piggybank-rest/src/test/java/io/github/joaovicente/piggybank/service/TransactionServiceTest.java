@@ -34,7 +34,7 @@ public class TransactionServiceTest {
     private final int AMOUNT_200 = 200;
     private final String AMOUNT_200_STR = Integer.toString(AMOUNT_200);
     private final String AMOUNT_0 = "0";
-    final String DATE_PATTERN = "yyyy-MM-dd";
+    private final String DATE_PATTERN = "yyyy-MM-dd";
     private final String DATE1_STR = "2017-01-01";
     private Date DATE1;
     private final String DATE2_STR = "2018-02-02";
@@ -66,7 +66,7 @@ public class TransactionServiceTest {
                 .description(DESCRIPTION_CREDIT1)
                 .build();
         // Given transactionRepository.insert() will return
-        given(this.transactionRepository.insert(transaction)).willReturn(transaction);
+        given(this.transactionRepository.save(transaction)).willReturn(transaction);
 
         // when transactionService.createTransaction is called with a valid transaction
         Transaction insertedTransaction = transactionService.createTransaction(transaction);
@@ -166,7 +166,7 @@ public class TransactionServiceTest {
     }
 
     @Test(expected = TransactionNotFoundException.class)
-    public void deleteTransactionNotFound() throws Exception {
+    public void deleteTransactionNotFound() {
         String ID = "c9635e84-4111-4de9-b896-f506fc7bc25b";
 
         given(this.transactionRepository.existsById(ID))

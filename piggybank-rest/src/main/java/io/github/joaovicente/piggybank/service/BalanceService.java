@@ -10,8 +10,8 @@ import static io.github.joaovicente.piggybank.type.TransactionKind.CREDIT;
 
 @Service
 public class BalanceService {
-    private KidService kidService;
-    private TransactionService transactionService;
+    private final KidService kidService;
+    private final TransactionService transactionService;
 
     @Autowired
     public BalanceService(KidService kidService, TransactionService transactionService) {

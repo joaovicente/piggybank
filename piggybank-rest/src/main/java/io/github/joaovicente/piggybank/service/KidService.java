@@ -5,6 +5,7 @@ import io.github.joaovicente.piggybank.entity.Kid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public class KidService {
     }
 
     public Kid createKid(Kid kid) {
-        return kidRepository.insert(kid);
+        return kidRepository.save(kid);
     }
 
     public boolean kidExists(String kidId)  {
@@ -38,7 +39,9 @@ public class KidService {
     }
 
     public List<Kid> getKids()  {
-        return kidRepository.findAll();
+        List<Kid> kidList = new ArrayList<>();
+        kidRepository.findAll().forEach(kidList::add);
+        return kidList;
     }
 
     public void deleteKidById(String id)  {

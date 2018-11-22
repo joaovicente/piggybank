@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,10 +17,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.github.joaovicente.piggybank.dto.ErrorUtil.ErrorCode;
+import io.github.joaovicente.piggybank.dto.ErrorUtil.ErrorMessage;
+
 @RestController
 public class TransactionController {
-    private TransactionService transactionService;
-    private ModelMapper modelMapper;
+    private final TransactionService transactionService;
+    private final ModelMapper modelMapper;
 
     @Autowired
     TransactionController(TransactionService transactionService, ModelMapper modelMapper)   {
@@ -42,10 +44,10 @@ public class TransactionController {
         }
         catch(KidNotFoundException e)  {
             ErrorDto errorDto = ErrorDto.builder()
-                    .error("NOT_FOUND")
-                    .message(Collections.singletonList("kidId not found"))
+                    .error(ErrorCode.RESOURCE_NOT_FOUND.value())
+                    .message(Collections.singletonList(ErrorMessage.NOT_FOUND.prefix("kidId")))
                     .build();
-            throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
+            throw new RestResponseException(errorDto);
         }
         return modelMapper.map(createdTransaction, TransactionDto.class);
     }
@@ -62,10 +64,10 @@ public class TransactionController {
         }
         catch(TransactionNotFoundException e)  {
             ErrorDto errorDto = ErrorDto.builder()
-                    .error("NOT_FOUND")
-                    .message(Collections.singletonList("transactionId not found"))
+                    .error(ErrorCode.RESOURCE_NOT_FOUND.value())
+                    .message(Collections.singletonList(ErrorMessage.NOT_FOUND.prefix("transactionId")))
                     .build();
-            throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
+            throw new RestResponseException(errorDto);
         }
     }
 
@@ -81,10 +83,10 @@ public class TransactionController {
         }
         catch(KidNotFoundException e)  {
             ErrorDto errorDto = ErrorDto.builder()
-                    .error("NOT_FOUND")
-                    .message(Collections.singletonList("kidId not found"))
+                    .error(ErrorCode.RESOURCE_NOT_FOUND.value())
+                    .message(Collections.singletonList(ErrorMessage.NOT_FOUND.prefix("kidId")))
                     .build();
-            throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
+            throw new RestResponseException(errorDto);
         }
         return transactionList.stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionDto.class))

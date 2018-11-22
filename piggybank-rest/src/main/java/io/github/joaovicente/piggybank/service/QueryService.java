@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class QueryService {
-    private KidService kidService;
-    private BalanceService balanceService;
+    private final KidService kidService;
+    private final BalanceService balanceService;
 
     @Autowired
     public QueryService(KidService kidService, BalanceService balanceService) {

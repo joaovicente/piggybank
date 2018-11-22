@@ -16,7 +16,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static io.restassured.RestAssured.*;
@@ -69,6 +68,7 @@ public class AcceptanceTests {
     }
 
 
+    @SuppressWarnings("UnusedReturnValue")
     private String createTransaction(Map <String, String> transaction) {
         final int RANDOMLY_GENERATED_UUID = 4;
         String kidId = transaction.get("kidId");

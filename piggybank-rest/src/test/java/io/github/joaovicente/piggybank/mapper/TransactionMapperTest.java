@@ -12,7 +12,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TransactionMapperTest {
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
     final int AMOUNT = 100;
     final Date DATE = new Date();
     final String DESCRIPTION = "Gift from grandparents";

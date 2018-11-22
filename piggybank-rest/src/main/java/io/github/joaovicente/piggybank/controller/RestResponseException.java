@@ -7,9 +7,9 @@ public class RestResponseException extends RuntimeException {
     private final transient ErrorDto errorDto;
     private final HttpStatus status;
 
-    RestResponseException(ErrorDto errorDto, HttpStatus status) {
+    RestResponseException(ErrorDto errorDto) {
         this.errorDto = errorDto;
-        this.status = status;
+        this.status = HttpStatus.NOT_FOUND;
     }
 
     public ErrorDto getErrorDto() {

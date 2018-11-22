@@ -37,6 +37,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @WebMvcTest(KidController.class)
 public class KidControllerTest {
+
     @TestConfiguration
     static class ModelMapperConfiguration {
         @Bean
@@ -52,6 +53,9 @@ public class KidControllerTest {
     private KidService kidService;
     @Autowired
     private ModelMapper modelMapper;
+
+    private static final String RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND";
+    private static final String INVALID_INPUT = "INVALID_INPUT";
 
     @Test
     public void createKid() throws Exception {
@@ -86,8 +90,8 @@ public class KidControllerTest {
         this.mvc.perform(post("/kids").contentType(MediaType.APPLICATION_JSON)
                 .content(kidAsJson).characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("name must not be empty"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("name must not be blank"));
     }
 
     @Test
@@ -95,9 +99,9 @@ public class KidControllerTest {
         this.mvc.perform(post("/kids").contentType(MediaType.APPLICATION_JSON)
                 .content("{}").characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[*]")
-                        .value(containsInAnyOrder("name must not be empty","name must not be null")));
+                        .value(containsInAnyOrder("name must not be blank","name must not be null")));
     }
 
     @Test
@@ -105,9 +109,9 @@ public class KidControllerTest {
         this.mvc.perform(post("/kids").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":null}").characterEncoding("utf-8"))
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("BAD_REQUEST"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(INVALID_INPUT))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[*]")
-                        .value(containsInAnyOrder("name must not be empty","name must not be null")));
+                        .value(containsInAnyOrder("name must not be blank","name must not be null")));
     }
 
     @Test
@@ -152,7 +156,7 @@ public class KidControllerTest {
 
         this.mvc.perform(get("/kids/" + ID).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(RESOURCE_NOT_FOUND))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kidId not found"));
     }
 
@@ -174,7 +178,7 @@ public class KidControllerTest {
 
         this.mvc.perform(delete("/kids/" + ID).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("NOT_FOUND"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value(RESOURCE_NOT_FOUND))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message[0]").value("kidId not found"));
     }
 

@@ -6,7 +6,6 @@ import io.github.joaovicente.piggybank.service.BalanceService;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
 
+import io.github.joaovicente.piggybank.dto.ErrorUtil.ErrorCode;
+import io.github.joaovicente.piggybank.dto.ErrorUtil.ErrorMessage;
+
 @RestController
 public class BalanceController {
-    private BalanceService balanceService;
+    private final BalanceService balanceService;
 
     public BalanceController(BalanceService balanceService) {
         this.balanceService = balanceService;
@@ -34,10 +36,10 @@ public class BalanceController {
         }
         catch(KidNotFoundException e)  {
             ErrorDto errorDto = ErrorDto.builder()
-                    .error("NOT_FOUND")
-                    .message(Collections.singletonList("kidId not found"))
+                    .error(ErrorCode.RESOURCE_NOT_FOUND.value())
+                    .message(Collections.singletonList(ErrorMessage.NOT_FOUND.prefix("kidId")))
                     .build();
-            throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
+            throw new RestResponseException(errorDto);
         }
         return balanceDto;
     }

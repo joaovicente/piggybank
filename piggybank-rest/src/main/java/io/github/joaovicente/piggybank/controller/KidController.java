@@ -1,5 +1,6 @@
 package io.github.joaovicente.piggybank.controller;
 
+import io.github.joaovicente.piggybank.dto.ErrorUtil.*;
 import io.github.joaovicente.piggybank.dto.KidDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.entity.Kid;
@@ -9,7 +10,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,10 +51,10 @@ public class KidController {
         catch(KidNotFoundException e)  {
 
             ErrorDto errorDto = ErrorDto.builder()
-                    .error("NOT_FOUND")
-                    .message(Collections.singletonList("kidId not found"))
+                    .error(ErrorCode.RESOURCE_NOT_FOUND.value())
+                    .message(Collections.singletonList(ErrorMessage.NOT_FOUND.prefix("kidId")))
                     .build();
-            throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
+            throw new RestResponseException(errorDto);
         }
         return modelMapper.map(kid, KidDto.class);
     }
@@ -81,10 +81,10 @@ public class KidController {
         }
         catch(KidNotFoundException e)  {
             ErrorDto errorDto = ErrorDto.builder()
-                    .error("NOT_FOUND")
-                    .message(Collections.singletonList("kidId not found"))
+                    .error(ErrorCode.RESOURCE_NOT_FOUND.value())
+                    .message(Collections.singletonList(ErrorMessage.NOT_FOUND.prefix("kidId")))
                     .build();
-            throw new RestResponseException(errorDto, HttpStatus.NOT_FOUND);
+            throw new RestResponseException(errorDto);
         }
     }
 }

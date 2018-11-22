@@ -38,7 +38,7 @@ public class KidServiceTest {
                 .build();
 
         // Given
-        given(this.kidRepository.insert(kid)).willReturn(kid);
+        given(this.kidRepository.save(kid)).willReturn(kid);
 
         // When
         Kid kidInserted = kidService.createKid(kid);
@@ -113,7 +113,7 @@ public class KidServiceTest {
     }
 
     @Test(expected = KidNotFoundException.class)
-    public void deleteKidNotFound() throws Exception {
+    public void deleteKidNotFound() {
         String ID = "c9635e84-4111-4de9-b896-f506fc7bc25b";
 
         given(this.kidRepository.existsById(ID))
