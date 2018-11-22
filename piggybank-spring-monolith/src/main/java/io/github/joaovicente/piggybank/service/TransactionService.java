@@ -21,6 +21,9 @@ public class TransactionService {
     }
 
     public Transaction createTransaction(Transaction transaction) {
+        if (!kidService.kidExists(transaction.getKidId()))    {
+            throw new KidNotFoundException();
+        }
         return transactionRepository.save(transaction);
     }
 

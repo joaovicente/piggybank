@@ -60,11 +60,14 @@ public class TransactionServiceTest {
     @Test
     public void createTransaction() {
         Transaction transaction = Transaction.builder()
+                .kidId(KID_ID1)
                 .date(DATE1)
                 .kind(TransactionKind.CREDIT)
                 .amount(AMOUNT_100)
                 .description(DESCRIPTION_CREDIT1)
                 .build();
+        // Given kid exists
+        given(this.kidService.kidExists(KID_ID1)).willReturn(true);
         // Given transactionRepository.insert() will return
         given(this.transactionRepository.save(transaction)).willReturn(transaction);
 
@@ -73,6 +76,23 @@ public class TransactionServiceTest {
 
         // Then it will return the transactionId
         assertThat(insertedTransaction).isEqualTo(transaction);
+    }
+
+
+    @Test(expected = KidNotFoundException.class)
+    public void createTransactionKidIdNotFound() {
+        Transaction transaction = Transaction.builder()
+                .kidId(KID_ID1)
+                .date(DATE1)
+                .kind(TransactionKind.CREDIT)
+                .amount(AMOUNT_100)
+                .description(DESCRIPTION_CREDIT1)
+                .build();
+        // Given transactionRepository.insert() will return
+        given(this.kidService.kidExists(KID_ID1)).willReturn(false);
+
+        // when transactionService.createTransaction is called with a valid transaction
+        transactionService.createTransaction(transaction);
     }
 
     @Test
