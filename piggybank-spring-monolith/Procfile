@@ -1,0 +1,1 @@
+web: java -jar target/piggybank-spring-monolith-0.0.1-SNAPSHOT.jar
