@@ -21,7 +21,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SwaggerAPI {
+public class SwaggerAPITest {
     @LocalServerPort
     private int port;
 
