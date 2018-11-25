@@ -6,6 +6,7 @@ import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.entity.Kid;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import io.github.joaovicente.piggybank.service.KidService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
@@ -28,6 +29,7 @@ public class KidController {
         this.modelMapper = modelMapper;
     }
 
+    @ApiOperation(value = "createKid", nickname = "createKid")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Bad Request"),
@@ -38,6 +40,7 @@ public class KidController {
         return modelMapper.map(kid, KidDto.class);
     }
 
+    @ApiOperation(value = "getKidById", nickname = "getKidById")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")
@@ -59,17 +62,19 @@ public class KidController {
         return modelMapper.map(kid, KidDto.class);
     }
 
+    @ApiOperation(value = "getKids", nickname = "getKids")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
     })
     @GetMapping(value = "/kids")
-    public List<KidDto> getKid()    {
+    public List<KidDto> getKids()    {
         List<Kid> kidList = kidService.getKids();
         return kidList.stream()
                 .map(kid -> modelMapper.map(kid, KidDto.class))
                 .collect(Collectors.toList());
     }
 
+    @ApiOperation(value = "deleteKid", nickname = "deleteKid")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")

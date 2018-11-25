@@ -6,6 +6,7 @@ import io.github.joaovicente.piggybank.entity.Transaction;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
 import io.github.joaovicente.piggybank.service.TransactionNotFoundException;
 import io.github.joaovicente.piggybank.service.TransactionService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
@@ -31,6 +32,7 @@ public class TransactionController {
         this.modelMapper = modelMapper;
     }
 
+    @ApiOperation(value = "createTransaction", nickname = "createTransaction")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Bad Request"),
@@ -52,6 +54,7 @@ public class TransactionController {
         return modelMapper.map(createdTransaction, TransactionDto.class);
     }
 
+    @ApiOperation(value = "deleteTransaction", nickname = "deleteTransaction")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Bad Request"),
@@ -71,6 +74,7 @@ public class TransactionController {
         }
     }
 
+    @ApiOperation(value = "getTransactions", nickname = "getTransactions")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Bad Request"),

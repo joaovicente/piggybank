@@ -4,6 +4,7 @@ import io.github.joaovicente.piggybank.dto.BalanceDto;
 import io.github.joaovicente.piggybank.dto.ErrorDto;
 import io.github.joaovicente.piggybank.service.BalanceService;
 import io.github.joaovicente.piggybank.service.KidNotFoundException;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ public class BalanceController {
         this.balanceService = balanceService;
     }
 
+    @ApiOperation(value = "getBalanceForKid", nickname = "getBalanceforKid")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")

@@ -2,6 +2,7 @@ package io.github.joaovicente.piggybank.controller;
 
 import io.github.joaovicente.piggybank.dto.KidAndBalancesDto;
 import io.github.joaovicente.piggybank.service.QueryService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class QueryController {
         this.queryService = queryService;
     }
 
+    @ApiOperation(value = "getKidsAndBalances", nickname = "getKidsAndBalances")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
     })
