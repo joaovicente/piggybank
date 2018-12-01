@@ -1,11 +1,11 @@
 @startuml
 
-actor Teller
-note right of Teller : i.e. Mum and Dad
+actor Parent
+note right of Parent : i.e. Mum and Dad
 
-Teller --> (Record Credit)
-Teller --> (Record Debit)
-Teller --> (Check kidBalance)
-Teller --> (Get statement)
+Parent --> (Record Credit)
+Parent --> (Record Debit)
+Parent --> (View Kids Balances)
+Parent --> (View Kid Transactions)
 
 @enduml

@@ -1,0 +1,12 @@
+@startuml
+salt
+{
+  <b>My Piggybank
+  == | ==
+  Kids balances
+  == | ==
+  Albert | €80.00
+  Beth | €10.00
+  Carol | €120.00
+}
+@enduml

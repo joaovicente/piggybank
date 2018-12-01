@@ -1,8 +1,8 @@
 @startuml
 
 class Bank
-class Customer
-class Teller
+class Kid
+class Parent
 
 package core {
     class Account
@@ -11,12 +11,12 @@ package core {
     class Debit
 }
 
-Debit --|> Transaction
-Credit --|> Transaction
+Debit --|> Transaction : is-a
+Credit --|> Transaction : is-a
 
-Bank *- Customer
-Customer *- Account
+Bank *- Kid
+Kid *- Account
 Account <-- Transaction :  operates \non
-Transaction <-right- Teller : makes
+Transaction <-right- Parent : makes
 
 @enduml
