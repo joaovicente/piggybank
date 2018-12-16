@@ -1,6 +1,6 @@
 package io.github.joaovicente.piggybank.controller;
 
-import io.github.joaovicente.piggybank.dto.KidAndBalancesDto;
+import io.github.joaovicente.piggybank.dto.KidsAndBalancesDto;
 import io.github.joaovicente.piggybank.service.QueryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,15 +39,15 @@ public class QueryControllerTest {
         final int KID1_BALANCE= 10;
         final int KID2_BALANCE= 20;
         final int KID3_BALANCE= 30;
-        List<KidAndBalancesDto> kidAndBalancesDtoList = new ArrayList<>();
-        kidAndBalancesDtoList.add(KidAndBalancesDto.builder()
+        List<KidsAndBalancesDto> kidsAndBalancesDtoList = new ArrayList<>();
+        kidsAndBalancesDtoList.add(KidsAndBalancesDto.builder()
                 .kidId(KID1_ID).kidName(KID1_NAME).kidBalance(KID1_BALANCE).build());
-        kidAndBalancesDtoList.add(KidAndBalancesDto.builder()
+        kidsAndBalancesDtoList.add(KidsAndBalancesDto.builder()
                 .kidId(KID2_ID).kidName(KID2_NAME).kidBalance(KID2_BALANCE).build());
-        kidAndBalancesDtoList.add(KidAndBalancesDto.builder()
+        kidsAndBalancesDtoList.add(KidsAndBalancesDto.builder()
                 .kidId(KID3_ID).kidName(KID3_NAME).kidBalance(KID3_BALANCE).build());
 
-        given(queryService.getKidsAndBalance()).willReturn(kidAndBalancesDtoList);
+        given(queryService.getKidsAndBalance()).willReturn(kidsAndBalancesDtoList);
 
 
         this.mvc.perform(get("/kids-and-balances").accept(MediaType.APPLICATION_JSON))

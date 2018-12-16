@@ -1,6 +1,6 @@
 package io.github.joaovicente.piggybank.controller;
 
-import io.github.joaovicente.piggybank.dto.KidAndBalancesDto;
+import io.github.joaovicente.piggybank.dto.KidsAndBalancesDto;
 import io.github.joaovicente.piggybank.service.QueryService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,7 +25,7 @@ public class QueryController {
             @ApiResponse(code = 200, message = "OK"),
     })
     @GetMapping(path = "/kids-and-balances")
-    public List<KidAndBalancesDto> getKidsAndBalance()  {
+    public List<KidsAndBalancesDto> getKidsAndBalance()  {
         return queryService.getKidsAndBalance();
     }
 }

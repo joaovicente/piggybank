@@ -1,6 +1,6 @@
 package io.github.joaovicente.piggybank.service;
 
-import io.github.joaovicente.piggybank.dto.KidAndBalancesDto;
+import io.github.joaovicente.piggybank.dto.KidsAndBalancesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +18,9 @@ public class QueryService {
         this.balanceService = balanceService;
     }
 
-    public List<KidAndBalancesDto> getKidsAndBalance()  {
+    public List<KidsAndBalancesDto> getKidsAndBalance()  {
         return kidService.getKids().stream()
-                .map(kid -> KidAndBalancesDto.builder()
+                .map(kid -> KidsAndBalancesDto.builder()
                        .kidId(kid.getId())
                        .kidName(kid.getName())
                        .kidBalance(balanceService.calculateKidBalance(kid.getId()))
