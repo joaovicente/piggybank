@@ -1,6 +1,6 @@
 package io.github.joaovicente.piggybank.service;
 
-import io.github.joaovicente.piggybank.dto.KidAndBalancesDto;
+import io.github.joaovicente.piggybank.dto.KidsAndBalancesDto;
 import io.github.joaovicente.piggybank.entity.Kid;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class QueryServiceTest {
         given(balanceService.calculateKidBalance(kidList.get(2).getId())).willReturn(KID3_BALANCE);
 
         // When
-        List<KidAndBalancesDto> response = queryService.getKidsAndBalance();
+        List<KidsAndBalancesDto> response = queryService.getKidsAndBalance();
 
         // Then
         assertThat(response.get(0).getKidId()).isEqualTo(kidList.get(0).getId());

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class KidAndBalancesDto {
+public class KidsAndBalancesDto {
     private String kidId;
     private String kidName;
     private int kidBalance;
