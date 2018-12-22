@@ -1,0 +1,13 @@
+table {
+    width: 50%;
+    margin-left:25%; 
+    margin-right:25%;
+}
+.mat-raised-button{
+    margin-top:10px; 
+    margin-left:20%; 
+}
+  
+tr.mat-footer-row {
+    font-weight: bold;
+}

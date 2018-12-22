@@ -10,7 +10,7 @@
   <ng-container matColumnDef="buttons">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let item">
-      <a mat-stroked-button color="primary" [routerLink]="['/kid-transactions', item.kidId]">List transactions</a>  
+      <a mat-stroked-button color="primary" [routerLink]="['/list-transactions', item.kidId]">List transactions</a>  
       <a mat-stroked-button color="primary" [routerLink]="['/add-transaction', item.kidId]">Add transaction</a> 
     </td>
   </ng-container>
