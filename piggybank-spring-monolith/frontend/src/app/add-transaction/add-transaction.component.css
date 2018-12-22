@@ -1,0 +1,28 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+  }
+    
+  .component-container  {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+  
+  .example-right-align {
+    text-align: right;
+  }
+  
+    /* .example-radio-group {
+      display: inline-flex;
+      flex-direction: column;
+    } */
+  
+  .mat-radio-button {
+    margin: 15px;
+  }
+  
+  .mat-form-field {
+    margin: 5px;
+  }
+  
