@@ -1,0 +1,24 @@
+<div class="component-container">
+  <form class="form-container" [formGroup]="form">
+    <div>
+      <mat-radio-group formControlName="kind" class="example-radio-group">
+        <mat-radio-button value="CREDIT">CREDIT</mat-radio-button>
+        <mat-radio-button value="DEBIT">DEBIT</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <mat-form-field>
+        <input formControlName="date" matInput [matDatepicker]="picker" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+        <input formControlName="amount" matInput placeholder="Amount" type="number" class="example-right-align">
+        <span matPrefix>€&nbsp;</span>
+        <span matSuffix>.00</span>
+      </mat-form-field>
+    <mat-form-field>
+      <input formControlName="description" matInput placeholder="Description">
+    </mat-form-field>
+    <button mat-button (click)="onSubmit()"type="submit">Submit</button>
+  </form>
+</div>

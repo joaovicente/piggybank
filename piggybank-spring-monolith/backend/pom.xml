@@ -5,17 +5,17 @@
 
 	<groupId>io.github.joaovicente</groupId>
 	<artifactId>piggybank-spring-monolith</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>piggybank-spring-monolith</name>
 	<description>Piggybank backend</description>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.4.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>io.github.joaovicente</groupId>
+		<artifactId>piggybank-spring-monolith-parent</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<properties>
@@ -26,6 +26,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency >
+            <groupId>io.github.joaovicente</groupId>
+            <artifactId>frontend</artifactId>
+            <version>${project.parent.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
