@@ -1,19 +1,13 @@
-<table mat-table [dataSource]="kidsAndBalances" class="mat-elevation-z8">
-  <ng-container matColumnDef="kidName">
-    <th mat-header-cell *matHeaderCellDef> Kid</th>
-    <td mat-cell *matCellDef="let item"> {{item.kidName}} </td>
-  </ng-container>
-  <ng-container matColumnDef="kidBalance">
-    <th mat-header-cell *matHeaderCellDef> Balance </th>
-    <td mat-cell *matCellDef="let item"> {{toEuro(item.kidBalance) | currency:'EUR'}} </td>
-  </ng-container>
-  <ng-container matColumnDef="buttons">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let item">
-      <a mat-stroked-button color="primary" [routerLink]="['/list-transactions', item.kidId]">List transactions</a>  
-      <a mat-stroked-button color="primary" [routerLink]="['/add-transaction', item.kidId]">Add transaction</a> 
-    </td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+<div class="container">
+  <mat-card *ngFor="let item of kidsAndBalances" class="card">
+      <mat-grid-list cols="2" rowHeight="2:1">
+          <mat-grid-tile class="name">{{item.kidName}}</mat-grid-tile>
+          <mat-grid-tile></mat-grid-tile>
+          <mat-grid-tile class="balance">{{toEuro(item.kidBalance) | currency:'EUR'}}</mat-grid-tile>
+          <mat-grid-tile>
+            <button [routerLink]="['/list-transactions', item.kidId]" mat-mini-fab><mat-icon>list</mat-icon></button>
+            <button [routerLink]="['/add-transaction', item.kidId]" mat-mini-fab><mat-icon>add</mat-icon></button>
+          </mat-grid-tile>
+      </mat-grid-list>
+  </mat-card>
+</div>

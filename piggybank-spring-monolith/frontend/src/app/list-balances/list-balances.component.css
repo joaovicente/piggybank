@@ -1,15 +1,18 @@
-table {
-    width: 100%;
-    margin-left:0%; 
-    margin-right:0%;
+.card {
+    max-width: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-tr.mat-footer-row {
-    font-weight: bold;
+.name {
+    font-size: 20px;
 }
 
-.mat-stroked-button{
-    margin-right: 10px;
+.balance {
+    font-size: 20px;
+    color: green;
 }
 
 button  {

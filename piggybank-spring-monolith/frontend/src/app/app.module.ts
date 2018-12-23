@@ -4,7 +4,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatButtonModule, MatIconModule, MatInputModule, MatRadioModule, MatDatepickerModule } from '@angular/material';
+import { MatTableModule, MatButtonModule, MatIconModule, MatInputModule} from '@angular/material';
+import { MatRadioModule, MatDatepickerModule, MatCardModule, MatGridListModule } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { ListBalancesComponent } from './list-balances/list-balances.component';
@@ -22,6 +23,8 @@ import { AddTransactionComponent } from './add-transaction/add-transaction.compo
     BrowserModule,
     AppRoutingModule,
     MatTableModule,
+    MatCardModule,
+    MatGridListModule,
     HttpClientModule,
     MatButtonModule,
     MatIconModule,
