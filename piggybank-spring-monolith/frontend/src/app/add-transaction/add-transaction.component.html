@@ -1,4 +1,4 @@
-<div class="component-container">
+<div class="main-container">
   <form class="form-container" [formGroup]="form">
     <div>
       <mat-radio-group formControlName="kind" class="example-radio-group">
@@ -19,6 +19,7 @@
     <mat-form-field>
       <input formControlName="description" matInput placeholder="Description">
     </mat-form-field>
-    <button mat-button (click)="onSubmit()"type="submit">Submit</button>
   </form>
+  <button mat-raised-button color="primary" [routerLink]="['/list-balances']">Back</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()"type="submit">Submit</button>
 </div>

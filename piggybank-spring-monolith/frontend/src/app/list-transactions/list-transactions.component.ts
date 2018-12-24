@@ -25,8 +25,13 @@ export class ListTransactionsComponent implements OnInit {
       this.getTransactions();
     });
   }
+
   toEuro(centAmount)  {
     return centAmount / 100;
+  }
+
+  isCredit(kind)  {
+    return (kind === 'CREDIT');
   }
 
   onDelete(transactionId): void {

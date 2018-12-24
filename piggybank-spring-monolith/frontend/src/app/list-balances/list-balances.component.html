@@ -1,12 +1,11 @@
 <div class="container">
   <mat-card *ngFor="let item of kidsAndBalances" class="card">
-      <mat-grid-list cols="2" rowHeight="2:1">
+      <mat-grid-list cols="3" rowHeight="2:1">
           <mat-grid-tile class="name">{{item.kidName}}</mat-grid-tile>
-          <mat-grid-tile></mat-grid-tile>
           <mat-grid-tile class="balance">{{toEuro(item.kidBalance) | currency:'EUR'}}</mat-grid-tile>
           <mat-grid-tile>
-            <button [routerLink]="['/list-transactions', item.kidId]" mat-mini-fab><mat-icon>list</mat-icon></button>
-            <button [routerLink]="['/add-transaction', item.kidId]" mat-mini-fab><mat-icon>add</mat-icon></button>
+            <button [routerLink]="['/list-transactions', item.kidId]" mat-mini-fab color="primary"><mat-icon>list</mat-icon></button>
+            <button [routerLink]="['/add-transaction', item.kidId]" mat-mini-fab color="primary"><mat-icon>add</mat-icon></button>
           </mat-grid-tile>
       </mat-grid-list>
   </mat-card>
