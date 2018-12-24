@@ -5,7 +5,7 @@
           <mat-grid-tile *ngIf="!isCredit(transaction.kind)" class="debit-amount">- {{toEuro(transaction.amount) | currency:'EUR'}}</mat-grid-tile>
           <mat-grid-tile class="date">{{transaction.date | timeAgo}}</mat-grid-tile>
           <mat-grid-tile rowspan=2>
-            <button (click)="onEdit(transaction.id)" mat-mini-fab color=primary><mat-icon>edit</mat-icon></button>
+            <button (click)="onEdit(transaction.id)" mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
             <button (click)="onDelete(transaction.id)" mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
           </mat-grid-tile>
           <mat-grid-tile colspan=2><div class="description">{{transaction.description}}</div></mat-grid-tile>
